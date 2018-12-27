@@ -6,7 +6,7 @@
 #    By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/28 01:17:41 by olesgedz          #+#    #+#              #
-#    Updated: 2018/12/28 01:23:01 by olesgedz         ###   ########.fr        #
+#    Updated: 2018/12/28 01:30:56 by olesgedz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ $(LIBFT):
 	make -C ./libft
 
 $(NAME): libft $(OBJ)
-	@$(CC) $(LIBLINK) -o $(NAME) $(OBJ)
+	@$(CC) $(LIBFT) -o $(NAME) $(OBJ)
 
 debug: libft $(OBJ)
 	@$(CC) $(LIBLINK) -g $(SRC)
