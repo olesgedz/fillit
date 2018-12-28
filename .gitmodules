@@ -1,6 +1,0 @@
-[submodule "libft"]
-	path = libft
-	url = https://github.com/olesgedz/libft.git
-[submodule "get_next_line"]
-	path = get_next_line
-	url = https://github.com/olesgedz/get_next_line.git
