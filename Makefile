@@ -6,7 +6,7 @@
 #    By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/28 01:17:41 by olesgedz          #+#    #+#              #
-#    Updated: 2018/12/28 18:20:15 by jblack-b         ###   ########.fr        #
+#    Updated: 2018/12/28 18:24:16 by jblack-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIBINC= -I ./libft/includes/
 all: $(NAME)
 
 $(NAME):
-	@$(CC) $(LIBFT) $(SRC) $(LIBINC)
+	@$(CC) $(LIBFT) $(SRC) $(LIBINC) -o $(NAME)
 
 libft: $(LIBFT)
 
