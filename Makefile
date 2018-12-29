@@ -6,7 +6,7 @@
 #    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
-#    Updated: 2018/12/29 18:10:27 by jblack-b         ###   ########.fr        #
+#    Updated: 2018/12/29 18:19:20 by jblack-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CFLAGS= -Wall -Wextra -Werror
 LIBFT= ./libft/libft.a
 LIBINC= -I ./libft/includes/
 
-all: $(NAME)
+all: $(NAME) $(LIBFT)
 
 $(NAME): $(SRC)
 	$(CC) -g $(LIBFT) $(SRC) $(LIBINC) -o $(NAME)

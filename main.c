@@ -6,11 +6,9 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2018/12/29 18:10:34 by jblack-b         ###   ########.fr       */
+/*   Updated: 2018/12/29 21:02:11 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include <stdlib.h>
 #include <fcntl.h>
@@ -19,10 +17,38 @@
 #include "libft.h"
 #include "get_next_line.h"
 
-void		ft_printmap(char **map)
+typedef struct s_etris	t_etris;
+
+struct				s_etris
 {
-	while (map != NULL)
-		ft_putstr(*map++);
+	uint64_t			value;
+	t_etris				*last;
+	unsigned char		id;
+	unsigned char		x;
+	unsigned char		y;
+	unsigned char		width;
+	unsigned char		height;
+};
+
+void	ft_print_binary(uint64_t nbr)
+{
+	int i;
+	int g;
+
+	g = sizeof(uint64_t) * 8 - 1;
+	i = 0;
+	while (i <= g)
+	{
+		ft_putnbr(((nbr >> i) % 2));
+		i++;
+		if (i % 8 == 0)
+			ft_putchar('\n');
+	}
+	//ft_putnbr(nbr);
+	nbr /= 2 * i;
+	//ft_putnbr(nbr);
+	//nbr % 2 == 1 ? ft_putnbr(1) : ft_putnbr(0);
+	ft_putstr("\n");
 }
 
 int		main(int argc, char **argv)
@@ -32,9 +58,11 @@ int		main(int argc, char **argv)
 	char	*line;
 	char **matrix;
 	int i;
+	t_etris *figure;
 
-	matrix = (char **)(malloc(sizeof(char *) * 4));
-	matrix[5] = NULL;
+	figure = malloc(sizeof(t_etris));
+	matrix = (char **)(malloc(sizeof(char *) * 5));
+	matrix[4] = NULL;
 	i = 0;
 	if (argc < 2)
 	{
@@ -42,21 +70,21 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line))
+	while (get_next_line(fd, &line) && i < 4)
 	{
-		matrix[i] = ft_strnew(0);
-		matrix[i] = ft_strjoin(matrix[i], line);
-		//free(line);
+		matrix[i] = ft_strdup(line);
 		i++;
-		//ft_putstr("\n");
-		}
+		free(line);
+	}
+	ft_printmap(matrix);
+	figure->value = 0;
+	figure->value = 1;
+	figure->value <<= 1;
+	// //	figure->value <<= 1;
+	// figure->value |= ~((unsigned int)0);
+	// figure->value |= figure->value << 32;
+	// //figure->value <<= 8;
 
-		while (matrix != '\0')
-		{
-			ft_putstr(*matrix);
-			matrix++;
-		}
-	//ft_printmap(matrix);
-
+	ft_print_binary(figure->value);
 	return (0);
 }
