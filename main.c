@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2018/12/29 21:02:11 by jblack-b         ###   ########.fr       */
+/*   Updated: 2018/12/29 21:48:21 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ void	ft_print_binary(uint64_t nbr)
 	ft_putstr("\n");
 }
 
+int		ft_putbit(int j, int k, uint64_t *value)
+{
+	*value |= 1 << j ? k * j : k;
+	return (*value);
+}
+
 int		main(int argc, char **argv)
 {
 	int		fd;
@@ -78,8 +84,23 @@ int		main(int argc, char **argv)
 	}
 	ft_printmap(matrix);
 	figure->value = 0;
-	figure->value = 1;
-	figure->value <<= 1;
+	int j = 0;
+	int k = 0;
+	while (j < 4)
+	{
+		while (k < 4)
+		{
+			if (matrix[j][k] == '#')
+			{
+				ft_putbit(j, k, &figure->value);
+				ft_print_binary(figure->value);
+				printf(" s :%d, %d ", j, k);
+			}
+			k++;
+		}
+		k = 0;
+		j++;
+	}
 	// //	figure->value <<= 1;
 	// figure->value |= ~((unsigned int)0);
 	// figure->value |= figure->value << 32;
