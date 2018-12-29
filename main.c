@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2018/12/29 22:08:21 by jblack-b         ###   ########.fr       */
+/*   Updated: 2018/12/29 22:29:57 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_print_binary(uint64_t nbr)
 
 int		ft_putbit(int j, int k, uint64_t *value)
 {
-	*value |= 1 << j ? k * j : k;
+	*value |= 1 << (j ? k * j : k);
 	return (*value);
 }
 
