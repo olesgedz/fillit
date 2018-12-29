@@ -3,12 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+         #
+#    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/12/28 01:17:41 by olesgedz          #+#    #+#              #
-#    Updated: 2018/12/28 21:59:39 by jblack-b         ###   ########.fr        #
+#    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
+#    Updated: 2018/12/29 18:10:27 by jblack-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME = fillit
 

@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/28 01:24:37 by olesgedz          #+#    #+#             */
-/*   Updated: 2018/12/28 21:56:56 by jblack-b         ###   ########.fr       */
+/*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
+/*   Updated: 2018/12/29 18:10:34 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include <stdlib.h>
 #include <fcntl.h>
