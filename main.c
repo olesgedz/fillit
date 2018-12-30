@@ -56,6 +56,30 @@ int		ft_putbit(int j, int k, uint64_t *value)
 	return (*value |= 1 << ((j * 8) + k));
 }
 
+int		ft_atob(t_etris *figure, char **matrix)
+{
+	int j;
+	int k;
+
+	j = 0;
+	k = 0;
+	while (j < 4)
+	{
+		while (k < 4)
+		{
+			if (matrix[j][k] == '#')
+			{
+				ft_putbit(j, k, &figure->value);
+				//printf(" s d:%d, %d ", j, k);
+			}
+			k++;
+		}
+		k = 0;
+		j++;
+	}
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	int		fd;
@@ -83,28 +107,12 @@ int		main(int argc, char **argv)
 	}
 	ft_printmap(matrix);
 	figure->value = 0;
-	int j = 0;
-	int k = 0;
-	while (j < 4)
-	{
-		while (k < 4)
-		{
-			if (matrix[j][k] == '#')
-			{
-				ft_putbit(j, k, &figure->value);
-				ft_print_binary(figure->value);
-				printf(" s d:%d, %d ", j, k);
-			}
-			k++;
-		}
-		k = 0;
-		j++;
-	}
 	// //	figure->value <<= 1;
 	// figure->value |= ~((unsigned int)0);
 	// figure->value |= figure->value << 32;
 	// //figure->value <<= 8;
-
+	
+	ft_atob(figure, matrix);
 	ft_print_binary(figure->value);
 	return (0);
 }

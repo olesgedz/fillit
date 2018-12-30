@@ -8,7 +8,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/Users/olesgedz/Documents/GitHub/fillit/fillit",
+            "program": "/Users/jblack-b/Documents/fillit/fillit",
             "args": ["box.txt"],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
