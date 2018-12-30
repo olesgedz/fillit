@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2018/12/30 02:12:15 by olesgedz         ###   ########.fr       */
+/*   Updated: 2018/12/30 23:51:34 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int		main(int argc, char **argv)
 	// figure->value |= ~((unsigned int)0);
 	// figure->value |= figure->value << 32;
 	// //figure->value <<= 8;
-	
+
 	ft_atob(figure, matrix);
 	ft_print_binary(figure->value);
 	return (0);
