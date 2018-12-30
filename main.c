@@ -93,7 +93,7 @@ int		main(int argc, char **argv)
 			{
 				ft_putbit(j, k, &figure->value);
 				ft_print_binary(figure->value);
-				printf(" s :%d, %d ", j, k);
+				printf(" s d:%d, %d ", j, k);
 			}
 			k++;
 		}

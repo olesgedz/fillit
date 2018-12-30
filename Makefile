@@ -26,12 +26,13 @@ LIBINC= -I ./libft/includes/
 all: $(NAME) $(LIBFT)
 
 $(NAME): $(SRC)
-	$(CC) -g $(LIBFT) $(SRC) $(LIBINC) -o $(NAME)
-
+	$(CC) -g $(LIBFT) $(SRC) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
 libft: $(LIBFT)
 
 $(LIBFT):
 	make -C ./libft
+coffee:
+	echo "hello"
 
 debug: libft $(OBJ)
 	@$(CC) $(LIBLINK) -g $(SRC)
