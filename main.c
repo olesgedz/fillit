@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/01 05:38:20 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/01 08:01:56 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_print_binary(uint64_t nbr)
 			ft_putchar('\n');
 	}
 	//ft_putnbr(nbr);
-	nbr /= 2 * i;
+	//nbr /= 2 * i;
 	//ft_putnbr(nbr);
 	//nbr % 2 == 1 ? ft_putnbr(1) : ft_putnbr(0);
 	ft_putstr("\n");
@@ -81,12 +81,12 @@ int		ft_atob(t_etris *figure, char **matrix)
 }
 
 
-void		ft_readfigure(int fd)
+void		ft_readfigure(int fd, char **matrix)
 {
 	char	*line;
 	char buf[1];
 	int i;
-	
+
 	i = 0;
 	while (get_next_line(fd, &line) && i < 4)
 	{
@@ -94,7 +94,7 @@ void		ft_readfigure(int fd)
 		i++;
 		free(line);
 	}
-	while(get_next_line(fd, &line));
+//	get_next_line(fd, &line);
 }
 
 int		main(int argc, char **argv)
@@ -105,10 +105,12 @@ int		main(int argc, char **argv)
 	char **matrix;
 	int i;
 	t_etris *figure[4];
-	uint64_t map;
-	
+	uint64_t temp;
+	int j;
 
-	figure = malloc(sizeof(t_etris));
+	j = 0;
+ while(j < 4)
+	figure[j++] = malloc(sizeof(t_etris));
 	matrix = (char **)(malloc(sizeof(char *) * 5));
 	matrix[4] = NULL;
 	i = 0;
@@ -124,16 +126,39 @@ int		main(int argc, char **argv)
 	// 	i++;
 	// 	free(line);
 	// }
-	
-	ft_readfigure(fd)
-	ft_printmap(matrix);
-	figure->value = 0;
-	// //	figure->value <<= 1;
-	// figure->value |= ~((unsigned int)0);
-	// figure->value |= figure->value << 32;
-	// //figure->value <<= 8;
+	//ft_printmap(matrix);
 
-	ft_atob(figure, matrix);
-	ft_print_binary();
+
+	figure[0]->value = 0;
+	ft_readfigure(fd, matrix);
+	ft_atob(figure[0], matrix);
+	figure[0]->value <<= 3;
+	ft_print_binary(figure[0]->value);
+
+	// i = 0;
+	// while (i < 4)
+	// {
+	// 	figure[i]->value = 0;
+	// 	ft_readfigure(fd, matrix);
+	// 	ft_atob(figure[i], matrix);
+	// 	//ft_print_binary(figure[i]->value);
+	// 	i++;
+	// }
+	//
+	// map = 0;
+	// temp = 0;
+	// i = 0;
+	// while (i < 4)
+	// {
+	// 	temp = map;
+	// 	ft_print_binary(figure[i]->value);
+	// 	map |= figure[i]->value;
+	// //	if ((figure[i]->value ^ temp) == 0)
+	// //		map = temp;
+	// 	//else
+	// 		//ft_putstr("x++");
+	// 	ft_print_binary(map);
+	// 	i++;
+	// }
 	return (0);
 }
