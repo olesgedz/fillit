@@ -80,14 +80,33 @@ int		ft_atob(t_etris *figure, char **matrix)
 	return (0);
 }
 
+
+void		ft_readfigure(int fd)
+{
+	char	*line;
+	char buf[1];
+	int i;
+	
+	i = 0;
+	while (get_next_line(fd, &line) && i < 4)
+	{
+		matrix[i] = ft_strdup(line);
+		i++;
+		free(line);
+	}
+	while(get_next_line(fd, &line));
+}
+
 int		main(int argc, char **argv)
 {
 	int		fd;
 	int		fd2;
-	char	*line;
+
 	char **matrix;
 	int i;
-	t_etris *figure;
+	t_etris *figure[4];
+	uint64_t map;
+	
 
 	figure = malloc(sizeof(t_etris));
 	matrix = (char **)(malloc(sizeof(char *) * 5));
@@ -99,12 +118,14 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) && i < 4)
-	{
-		matrix[i] = ft_strdup(line);
-		i++;
-		free(line);
-	}
+	// while (get_next_line(fd, &line) && i < 4)
+	// {
+	// 	matrix[i] = ft_strdup(line);
+	// 	i++;
+	// 	free(line);
+	// }
+	
+	ft_readfigure(fd)
 	ft_printmap(matrix);
 	figure->value = 0;
 	// //	figure->value <<= 1;
@@ -113,6 +134,6 @@ int		main(int argc, char **argv)
 	// //figure->value <<= 8;
 
 	ft_atob(figure, matrix);
-	ft_print_binary(figure->value);
+	ft_print_binary();
 	return (0);
 }
