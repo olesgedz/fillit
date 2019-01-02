@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/02 21:56:07 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/01 08:06:05 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int		main(int argc, char **argv)
 	t_etris *figure[4];
 	uint64_t temp;
 	int j;
-	char *line;
 
 	j = 0;
  while(j < 4)
@@ -121,13 +120,45 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) && i < 4)
-	{
-		matrix[i] = ft_strdup(line);
-		i++;
-		free(line);
-	}
-	ft_printmap(matrix);
+	// while (get_next_line(fd, &line) && i < 4)
+	// {
+	// 	matrix[i] = ft_strdup(line);
+	// 	i++;
+	// 	free(line);
+	// }
+	//ft_printmap(matrix);
 
+
+	figure[0]->value = 0;
+	ft_readfigure(fd, matrix);
+	ft_atob(figure[0], matrix);
+	figure[0]->value <<= 3; // works
+	ft_print_binary(figure[0]->value);
+
+	// i = 0;
+	// while (i < 4)
+	// {
+	// 	figure[i]->value = 0;
+	// 	ft_readfigure(fd, matrix);
+	// 	ft_atob(figure[i], matrix);
+	// 	//ft_print_binary(figure[i]->value);
+	// 	i++;
+	// }
+	//
+	// map = 0;
+	// temp = 0;
+	// i = 0;
+	// while (i < 4)
+	// {
+	// 	temp = map;
+	// 	ft_print_binary(figure[i]->value);
+	// 	map |= figure[i]->value;
+	// //	if ((figure[i]->value ^ temp) == 0)
+	// //		map = temp;
+	// 	//else
+	// 		//ft_putstr("x++");
+	// 	ft_print_binary(map);
+	// 	i++;
+	// }
 	return (0);
 }
