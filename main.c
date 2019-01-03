@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/02 21:56:07 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/03 20:49:44 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ typedef struct s_etris	t_etris;
 
 struct				s_etris
 {
-	uint64_t			value;
+	char				**value;
+	int 					valid;
 	t_etris				*last;
 	unsigned char		id;
 	unsigned char		x;
@@ -30,71 +31,27 @@ struct				s_etris
 	unsigned char		height;
 };
 
-void	ft_print_binary(uint64_t nbr)
+int		ft_validate(t_etris *figure)
 {
-	int i;
-	int g;
-
-	g = sizeof(uint64_t) * 8 - 1;
-	i = 0;
-	while (i <= g)
-	{
-		ft_putnbr(((nbr >> i) % 2));
-		i++;
-		if (i % 8 == 0)
-			ft_putchar('\n');
-	}
-	//ft_putnbr(nbr);
-	//nbr /= 2 * i;
-	//ft_putnbr(nbr);
-	//nbr % 2 == 1 ? ft_putnbr(1) : ft_putnbr(0);
-	ft_putstr("\n");
-}
-
-int		ft_putbit(int j, int k, uint64_t *value)
-{
-	return (*value |= 1 << ((j * 8) + k));
-}
-
-int		ft_atob(t_etris *figure, char **matrix)
-{
+	char **temp;
 	int j;
 	int k;
 
 	j = 0;
 	k = 0;
+	temp = figure->value;
 	while (j < 4)
 	{
-		while (k < 4)
+		if (ft_strchr(figure->value[j], '#'))
 		{
-			if (matrix[j][k] == '#')
-			{
-				ft_putbit(j, k, &figure->value); /// put it in (0,0)
-				//printf(" s d:%d, %d ", j, k);
-			}
-			k++;
+			//ft_putstr("\n");
+			//ft_putstr(figure->value[j]);
+			ft_putnbr(j);
+			ft_putstr("\n");
 		}
-		k = 0;
 		j++;
 	}
 	return (0);
-}
-
-
-void		ft_readfigure(int fd, char **matrix)
-{
-	char	*line;
-	char buf[1];
-	int i;
-
-	i = 0;
-	while (get_next_line(fd, &line) && i < 4)
-	{
-		matrix[i] = ft_strdup(line);
-		i++;
-		free(line);
-	}
-//	get_next_line(fd, &line);
 }
 
 int		main(int argc, char **argv)
@@ -104,14 +61,18 @@ int		main(int argc, char **argv)
 
 	char **matrix;
 	int i;
-	t_etris *figure[4];
+	t_etris *figures[4];
 	uint64_t temp;
 	int j;
 	char *line;
 
 	j = 0;
- while(j < 4)
-	figure[j++] = malloc(sizeof(t_etris));
+	while (j < 4)
+	{
+		figures[j] = malloc(sizeof(t_etris));
+		figures[j]->value = malloc(sizeof(char *) * 5);
+		figures[j++]->value[5] = NULL;
+	}
 	matrix = (char **)(malloc(sizeof(char *) * 5));
 	matrix[4] = NULL;
 	i = 0;
@@ -121,13 +82,25 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) && i < 4)
+	j = 0;
+	while (j < 4)
 	{
-		matrix[i] = ft_strdup(line);
-		i++;
-		free(line);
+		while (get_next_line(fd, &line) && i < 4)
+		{
+			figures[j]->value[i] = ft_strdup(line);
+			//ft_putstr(figures[j]->value[i]);
+			i++;
+			free(line);
+		}
+		i = 0;
+		j++;
 	}
-	ft_printmap(matrix);
-
+	i = 0;
+	while (i < 4)
+	{
+		ft_printmap(figures[i]->value);
+		ft_validate(figures[i]);
+		i++;
+	}
 	return (0);
 }
