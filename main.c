@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/04 18:57:48 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/04 20:28:46 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,55 @@ int		ft_validate(t_etris *figure)
 		figure->valid = 0;
 	return (figure->valid);
 }
+int		ft_getsizeY(t_etris *figure)
+{
+	int j;
+	int start;
+	int end;
+	int temp;
+
+	j = 0;
+	start = -1;
+	while (j < 4)
+	{
+		if (ft_strchr(figure->value[j], '#'))
+		{
+			if (start == -1)
+				start = j;
+			end = j;
+		}
+		j++;
+	}
+	figure->height = end - start + 1;
+	return (end - start + 1);
+}
+int		ft_getsizeX(t_etris *figure)
+{
+	int j;
+	int k;
+	int start;
+	int end;
+
+	start = 5;
+	j = 0;
+	while (j < 4)
+	{
+		k = 0;
+		while (k < 4)
+		{
+			if (figure->value[j][k] == '#')
+			{
+				if (start > k)
+					start = k;
+				if (end < k)
+					end = k;
+			}
+			k++;
+		}
+		j++;
+	}
+	return (end - start + 1);
+}
 
 int		main(int argc, char **argv)
 {
@@ -127,7 +176,7 @@ int		main(int argc, char **argv)
 	while (i < 4)
 	{
 		ft_printmap(figures[i]->value);
-		printf("%d\n", ft_validate(figures[i]));
+		printf("%d y:%d x:%d\n", ft_validate(figures[i]), ft_getsizeY(figures[i]), ft_getsizeX(figures[i]));
 		i++;
 	}
 	return (0);
