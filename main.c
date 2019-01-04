@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/04 18:05:05 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/04 18:28:28 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,45 +31,50 @@ struct				s_etris
 	unsigned char		height;
 };
 
+void		ft_count_nieghbors(int j, int k, int *count, char **temp)
+{
+	if (temp[j][k] == '#')
+	{
+		*count += 1;
+		if (k - 1 >= 0 && temp[j][k - 1] == '#')
+			*count += 1;
+		if (k + 1 <= 3 && temp[j][k + 1] == '#')
+			*count += 1;
+		if (j - 1 >= 0 && temp[j - 1][k] == '#')
+			*count += 1;
+		if (j + 1 <= 3 && temp[j + 1][k] == '#')
+			*count += 1;
+	}
+	//printf("%d\n", *count);
+}
+
 int		ft_validate(t_etris *figure)
 {
-	char **temp;
-	int j;
-	int k;
-	int count;
-	int map;
+	int		j;
+	int		k;
+	int		count;
+	int		map;
 
 	map = 1;
 	j = 0;
-	k = 0;
 	count = 0;
-	temp = figure->value;
 	while (j < 4)
 	{
+		k = 0;
 		while (k < 4)
 		{
-			if (temp[j][k] != '#' && temp[j][k] != '.')
+			if ((figure->value)[j][k] != '#' && (figure->value)[j][k] != '.')
 				map = 0;
-			if (temp[j][k] == '#')
-			{
-				count++;
-				if (k - 1 >= 0 && temp[j][k - 1] == '#')
-					count++;
-				if (k + 1 <= 3 && temp[j][k + 1] == '#')
-					count++;
-				if (j - 1 >= 0 && temp[j - 1][k] == '#')
-					count++;
-				if (j + 1 <= 3 && temp[j + 1][k] == '#')
-					count++;
-			}
+			ft_count_nieghbors(j, k, &count, figure->value);
 			k++;
 		}
-		k = 0;
 		j++;
 	}
 	if ((count == 10 || count == 12) && map == 1)
-		temp->valid = 1;
-	return (temp->valid);
+		figure->valid = 1;
+	else
+		figure->valid = 0;
+	return (figure->valid);
 }
 
 int		main(int argc, char **argv)
