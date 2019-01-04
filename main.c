@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/04 20:28:46 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/04 21:59:06 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,11 @@ int		ft_getsizeY(t_etris *figure)
 		j++;
 	}
 	figure->height = end - start + 1;
+	figure->y = start;
 	return (end - start + 1);
 }
+
+
 int		ft_getsizeX(t_etris *figure)
 {
 	int j;
@@ -129,8 +132,11 @@ int		ft_getsizeX(t_etris *figure)
 		}
 		j++;
 	}
+	figure->width = end - start + 1;
+	figure->x = start;
 	return (end - start + 1);
 }
+
 
 int		main(int argc, char **argv)
 {
@@ -175,8 +181,11 @@ int		main(int argc, char **argv)
 	i = 0;
 	while (i < 4)
 	{
-		ft_printmap(figures[i]->value);
+
 		printf("%d y:%d x:%d\n", ft_validate(figures[i]), ft_getsizeY(figures[i]), ft_getsizeX(figures[i]));
+		printf("%d, %d\n", figures[i]->x, figures[i]->y);
+		figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
+		ft_printmap(figures[i]->value);
 		i++;
 	}
 	return (0);
