@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/04 18:28:28 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/04 18:57:48 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,13 @@ void		ft_count_nieghbors(int j, int k, int *count, char **temp)
 		if (j + 1 <= 3 && temp[j + 1][k] == '#')
 			*count += 1;
 	}
-	//printf("%d\n", *count);
+}
+
+int		ft_checkwidth(char **figure, int j, int *map)
+{
+	if (ft_strlen(figure[j]) != 4)
+		*map = 0;
+	return (*map);
 }
 
 int		ft_validate(t_etris *figure)
@@ -61,12 +67,12 @@ int		ft_validate(t_etris *figure)
 	while (j < 4)
 	{
 		k = 0;
+		ft_checkwidth(figure->value, j, &map);
 		while (k < 4)
 		{
 			if ((figure->value)[j][k] != '#' && (figure->value)[j][k] != '.')
 				map = 0;
-			ft_count_nieghbors(j, k, &count, figure->value);
-			k++;
+			ft_count_nieghbors(j, k++, &count, figure->value);
 		}
 		j++;
 	}
@@ -111,7 +117,6 @@ int		main(int argc, char **argv)
 		while (get_next_line(fd, &line) && i < 4)
 		{
 			figures[j]->value[i] = ft_strdup(line);
-			//ft_putstr(figures[j]->value[i]);
 			i++;
 			free(line);
 		}
