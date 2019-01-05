@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/05 21:33:03 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/05 21:54:47 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ int		main(int argc, char **argv)
 	//	printf("%d, %d\n", figures[i]->x, figures[i]->y);
 		//figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
+
 		ft_printmap(figures[i]->value);
 		i++;
 	}
