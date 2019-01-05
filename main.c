@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/05 21:19:49 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/05 21:33:03 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		ft_getsizeX(t_etris *figure)
 	return (end - start + 1);
 }
 
-char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
+char		**ft_normfigure(char **dst, t_etris *figure, int x, int y)
 {
 	int j;
 	int k;
@@ -150,13 +150,12 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 		{
 			if (figure->value[j][k] == '#')
 			{
-				figure->value[j - figure->y][k - figure->x] = figure->value[j][k];
+				figure->value[j - figure->y][k - figure->x] =
+				\figure->value[j][k];
 				figure->value[j][k] = '.';
 			}
-			//printf("x %d, y %d w:%d h:%d \n", j, k, figure->width, figure->height);
 			k++;
 		}
-		printf("\n");
 		j++;
 	}
 	return (dst);
@@ -209,7 +208,7 @@ int		main(int argc, char **argv)
 		printf("%d y:%d x:%d\n", ft_validate(figures[i]), ft_getsizeY(figures[i]), ft_getsizeX(figures[i]));
 	//	printf("%d, %d\n", figures[i]->x, figures[i]->y);
 		//figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
-			ft_putfigure(figures[i]->value, figures[i], 1, 1);
+		ft_normfigure(figures[i]->value, figures[i], 0, 0);
 		ft_printmap(figures[i]->value);
 		i++;
 	}
