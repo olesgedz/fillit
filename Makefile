@@ -6,7 +6,7 @@
 #    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
-#    Updated: 2018/12/29 22:08:19 by jblack-b         ###   ########.fr        #
+#    Updated: 2019/01/06 02:08:57 by olesgedz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,16 @@ CFLAGS= -Wall -Wextra -Werror
 LIBFT= ./libft/libft.a
 LIBINC= -I ./libft/includes/
 
-all: $(NAME) $(LIBFT)
-
-$(NAME): $(SRC)
+$(NAME): $(OBJ) $(LIBFT)
 	$(CC) -g $(LIBFT) $(SRC) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
+
+all: $(NAME)
+
+
+
+$(OBJ): $(SRC)
+	clang -c $(SRC) -o $(OBJ) $(LIBINC)
+
 libft: $(LIBFT)
 
 $(LIBFT):
