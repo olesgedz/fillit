@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/05 21:54:47 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/05 22:37:15 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,31 @@ char		**ft_normfigure(char **dst, t_etris *figure, int x, int y)
 		{
 			if (figure->value[j][k] == '#')
 			{
-				figure->value[j - figure->y][k - figure->x] =
-				\figure->value[j][k];
+				figure->value[j - figure->y][k - figure->x] = \
+				figure->value[j][k];
 				figure->value[j][k] = '.';
+			}
+			k++;
+		}
+		j++;
+	}
+	return (dst);
+}
+char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
+{
+	int j;
+	int k;
+	j = figure->y;
+	while (j < figure->height + figure->y)
+	{
+		k = figure->x;
+		printf("k:%d j:%d", k, j);
+		while (k < figure->width + figure->x)
+		{
+			if (figure->value[j][k] == '#')
+			{
+				dst[j + y][k + x] = \
+				figure->value[j][k];
 			}
 			k++;
 		}
@@ -209,7 +231,7 @@ int		main(int argc, char **argv)
 	//	printf("%d, %d\n", figures[i]->x, figures[i]->y);
 		//figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
-
+		ft_putfigure(figures[i]->value, figures[i], 0, 1);
 		ft_printmap(figures[i]->value);
 		i++;
 	}
