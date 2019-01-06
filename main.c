@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/07 01:06:33 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/07 01:52:26 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,18 +185,17 @@ char**		ft_2darraynew(size_t y, size_t x, char c)
 		}
 		j++;
 	}
-	return()
+	return (new);
 }
 char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 {
 	int j;
 	int k;
-	j = figure->y;
-	while (j < figure->height + figure->y)
+	j = 0;
+	while (j < 4)
 	{
-		k = figure->x;
-		printf("k:%d j:%d", k, j);
-		while (k < figure->width + figure->x)
+		k = 0;
+		while (k < 4)
 		{
 			if (figure->value[j][k] == '#')
 			{
@@ -262,5 +261,10 @@ int		main(int argc, char **argv)
 		//ft_printmap(figures[i]->value);
 		i++;
 	}
+	char **new = ft_2darraynew(4, 4, '.');
+	//ft_printmap(figures[1]->value);
+	ft_putfigure(new, figures[1], 0, 3);
+	ft_putfigure(new, figures[0], 0, 0);
+	ft_printmap(new);
 	return (0);
 }
