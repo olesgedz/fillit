@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/06 02:09:29 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/07 01:06:33 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,33 @@ char		**ft_normfigure(char **dst, t_etris *figure, int x, int y)
 	}
 	return (dst);
 }
+
+char**		ft_2darraynew(size_t y, size_t x, char c)
+{
+	char** new;
+	size_t j;
+	size_t k;
+
+	if (!(new = (char **)(malloc(sizeof(char *) * y + 1))))
+		return (NULL);
+	new[y] = NULL;
+
+	j = 0;
+	while (j < y)
+	{
+		if (!(new[j]= (char *)(malloc(sizeof(char ) * x + 1))))
+			return (NULL);
+		new[j][x] = '\0';
+		k = 0;
+		while (k < x)
+		{
+			new[j][k] = c;
+			k++;
+		}
+		j++;
+	}
+	return()
+}
 char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 {
 	int j;
@@ -231,8 +258,8 @@ int		main(int argc, char **argv)
 	//	printf("%d, %d\n", figures[i]->x, figures[i]->y);
 		//figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
-		ft_putfigure(figures[i]->value, figures[i], 0, 1);
-		ft_printmap(figures[i]->value);
+		//ft_putfigure(figures[i]->value, figures[i], 0, 1);
+		//ft_printmap(figures[i]->value);
 		i++;
 	}
 	return (0);
