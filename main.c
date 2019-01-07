@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/07 01:52:26 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/07 18:40:55 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ char		**ft_normfigure(char **dst, t_etris *figure, int x, int y)
 	while (j < figure->height + figure->y)
 	{
 		k = figure->x;
-		printf("k:%d j:%d", k, j);
 		while (k < figure->width + figure->x)
 		{
 			if (figure->value[j][k] == '#')
@@ -187,6 +186,27 @@ char**		ft_2darraynew(size_t y, size_t x, char c)
 	}
 	return (new);
 }
+
+void		ft_cleanfigure(char **dst, t_etris *figure)
+{
+	int j;
+	int k;
+	j = 0;
+	while (j < 4)
+	{
+		k = 0;
+		while (k < 4)
+		{
+			if (dst[j][k] == figure->id)
+			{
+				dst[j][k] = '.';
+			}
+			k++;
+		}
+		j++;
+	}
+}
+
 char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 {
 	int j;
@@ -199,14 +219,30 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 		{
 			if (figure->value[j][k] == '#')
 			{
-				dst[j + y][k + x] = \
-				figure->value[j][k];
+				if (dst[j + y][k + x] != '.')
+				{
+					ft_cleanfigure(dst, figure);
+					return (NULL);
+				}
+				dst[j + y][k + x] = figure->id;
 			}
 			k++;
 		}
 		j++;
 	}
 	return (dst);
+}
+
+char**		ft_solve(t_etris *figure, char **map)
+{
+	int j;
+	int k;
+
+	//ft_printmap(figure->value);
+			ft_putfigure(map, figure, 0, 0);
+			//	break ;
+
+	return (map);
 }
 
 int		main(int argc, char **argv)
@@ -238,8 +274,10 @@ int		main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 	j = 0;
+	unsigned char c = 'A';
 	while (j < 4)
 	{
+		figures[j]->id = c++;
 		while (get_next_line(fd, &line) && i < 4)
 		{
 			figures[j]->value[i] = ft_strdup(line);
@@ -252,19 +290,18 @@ int		main(int argc, char **argv)
 	i = 0;
 	while (i < 4)
 	{
-
-		printf("%d y:%d x:%d\n", ft_validate(figures[i]), ft_getsizeY(figures[i]), ft_getsizeX(figures[i]));
-	//	printf("%d, %d\n", figures[i]->x, figures[i]->y);
-		//figures[i]->value[figures[i]->y][figures[i]->x] = 'S';
+		ft_validate(figures[i]);
+		ft_getsizeY(figures[i]);
+		ft_getsizeX(figures[i]);
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
-		//ft_putfigure(figures[i]->value, figures[i], 0, 1);
 		//ft_printmap(figures[i]->value);
 		i++;
 	}
-	char **new = ft_2darraynew(4, 4, '.');
-	//ft_printmap(figures[1]->value);
-	ft_putfigure(new, figures[1], 0, 3);
-	ft_putfigure(new, figures[0], 0, 0);
-	ft_printmap(new);
+	char **map;
+
+	map = ft_2darraynew(4, 4, '.');
+	ft_solve(figures[3], map);
+	ft_solve(figures[2], map);
+	ft_printmap(map);
 	return (0);
 }
