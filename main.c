@@ -192,10 +192,10 @@ void		ft_cleanfigure(char **dst, t_etris *figure)
 	int j;
 	int k;
 	j = 0;
-	while (j < 4)
+	while (j < ft_strlen(*dst))
 	{
 		k = 0;
-		while (k < 4)
+		while (k < ft_strlen(*dst))
 		{
 			if (dst[j][k] == figure->id)
 			{
@@ -219,12 +219,13 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 		{
 			if (figure->value[j][k] == '#')
 			{
-				if (dst[j + y][k + x] != '.')
+				if (dst[j + y][k + x] != '.' || !(j + y < ft_strlen(*dst))  || (k+x > ft_strlen(*dst)))
 				{
 					ft_cleanfigure(dst, figure);
 					return (NULL);
 				}
-				dst[j + y][k + x] = figure->id;
+				else
+					dst[j + y][k + x] = figure->id;
 			}
 			k++;
 		}
@@ -237,12 +238,26 @@ char**		ft_solve(t_etris *figure, char **map)
 {
 	int j;
 	int k;
+	int map_s;
+	int flag;
 
+	flag = 0;
 	//ft_printmap(figure->value);
-			ft_putfigure(map, figure, 0, 0);
+	map_s = ft_strlen(*map);
+	j = 0;
+	while(j < map_s)
+	{
+		k = 0;
+		while (k < map_s)
+		{
+			if (ft_putfigure(map, figure, k, j) != NULL)
+				return (map);
+			k++;
+		}
+		j++;
+	}
 			//	break ;
-
-	return (map);
+	return (NULL);
 }
 
 int		main(int argc, char **argv)
@@ -294,14 +309,24 @@ int		main(int argc, char **argv)
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
-		//ft_printmap(figures[i]->value);
+		ft_printmap(figures[i]->value);
 		i++;
 	}
 	char **map;
 
-	map = ft_2darraynew(4, 4, '.');
-	ft_solve(figures[3], map);
-	ft_solve(figures[2], map);
-	ft_printmap(map);
+	map = ft_2darraynew(5, 5, '.');
+	i = 0;
+	while (i < 4)
+	{
+		ft_solve(figures[i], map);
+		i++;
+	}
+	// map = ft_2darraynew(5, 5, '.');
+	// while (i < 4)
+	// {
+	// 	ft_solve(figures[i], map);
+	// 	i++;
+	// }
+	 ft_printmap(map);
 	return (0);
 }
