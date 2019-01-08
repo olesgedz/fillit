@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 14:36:21 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/08 14:54:27 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,7 @@ int		main(int argc, char **argv)
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
 		ft_normfigure(figures[i]->value, figures[i], 0, 0);
-		ft_printmap(figures[i]->value);
+		//ft_printmap(figures[i]->value);
 		i++;
 	}
 	char **map;
