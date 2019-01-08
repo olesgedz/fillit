@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 14:23:56 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/08 14:36:21 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 		{
 			if (figure->value[j][k] == '#')
 			{
-				if (dst[j + y][k + x] != '.' || !(j + y < ft_strlen(*dst))  || (k+x > ft_strlen(*dst)))
+				if ((j + y >= ft_strlen(*dst))  || (k + x  >= ft_strlen(*dst)) || dst[j + y][k + x] != '.')
 				{
 					ft_cleanfigure(dst, figure);
 					return (NULL);
@@ -316,7 +316,7 @@ int		main(int argc, char **argv)
 
 
 	i = 0;
-	int map_size = 10; //doenst work with 2
+	int map_size = 2; //doenst work with 2
 	int solved = 0;
 	while (1 && !solved)
 	{
