@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/07 18:40:55 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/08 13:35:07 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,6 @@ int		main(int argc, char **argv)
 	{
 		figures[j] = malloc(sizeof(t_etris));
 		figures[j]->value = malloc(sizeof(char *) * 5);
-		figures[j++]->value[5] = NULL;
 	}
 	matrix = (char **)(malloc(sizeof(char *) * 5));
 	matrix[4] = NULL;
@@ -299,6 +298,7 @@ int		main(int argc, char **argv)
 			i++;
 			free(line);
 		}
+		figures[j]->value[i] = NULL;
 		i = 0;
 		j++;
 	}
