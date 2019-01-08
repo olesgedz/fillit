@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 14:54:27 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/08 20:12:28 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int		ft_validate(t_etris *figure)
 	if ((count == 10 || count == 12) && map == 1)
 		figure->valid = 1;
 	else
+
 		figure->valid = 0;
 	return (figure->valid);
 }
@@ -137,7 +138,7 @@ int		ft_getsizeX(t_etris *figure)
 	return (end - start + 1);
 }
 
-char		**ft_normfigure(char **dst, t_etris *figure, int x, int y)
+char		**ft_normfigure(char **dst, t_etris *figure)
 {
 	int j;
 	int k;
@@ -234,7 +235,7 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 	return (dst);
 }
 
-char**		ft_solve(t_etris *figure, char **map)
+char**		ft_solve(t_etris *figure, char **map, int x, int y)
 {
 	int j;
 	int k;
@@ -250,7 +251,7 @@ char**		ft_solve(t_etris *figure, char **map)
 		k = 0;
 		while (k < map_s)
 		{
-			if (ft_putfigure(map, figure, k, j) != NULL)
+			if (ft_putfigure(map, figure, k + x, j + y) != NULL)
 				return (map);
 			k++;
 		}
@@ -308,7 +309,7 @@ int		main(int argc, char **argv)
 		ft_validate(figures[i]);
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
-		ft_normfigure(figures[i]->value, figures[i], 0, 0);
+		ft_normfigure(figures[i]->value, figures[i]);
 		//ft_printmap(figures[i]->value);
 		i++;
 	}
@@ -316,20 +317,33 @@ int		main(int argc, char **argv)
 
 
 	i = 0;
-	int map_size = 2; //doenst work with 2
+	int map_size = 10;
 	int solved = 0;
-	while (1 && !solved)
+	int x;
+	int y;
+	while (!solved)
 	{
-
 		map = ft_2darraynew(map_size, map_size, '.');
 		map_size++;
 		i = 0;
 		while (i < j)
 		{
-			if (ft_solve(figures[i], map) == NULL)
+			x = 0;
+			y = 0;
+			if (ft_solve(figures[i], map, x, y) == NULL)
 			{
+				ft_printmap(map);
+				i = i < 1 ? i : i - 1;
+				ft_cleanfigure(map, figures[i - 1]);
+				x++;
+				if (x > map_size)
+				{
+					y++;
+					x = 0;
+				}
+				ft_solve(figures[i - 1], map, x, y);
 				solved = 0;
-				break;
+				break ;
 			}
 			else
 				solved = 1;
