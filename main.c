@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 22:33:53 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/09 02:38:19 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ struct				s_etris
 	unsigned char		width;
 	unsigned char		height;
 };
+
+typedef struct s_map	t_map;
+
+struct			s_map
+{
+	char **content;
+	int map_size;
+};
+
+typedef struct	s_point
+{
+	int			x;
+	int			y;
+}				t_point;
 
 void		ft_count_nieghbors(int j, int k, int *count, char **temp)
 {
@@ -208,6 +222,16 @@ void		ft_cleanfigure(char **dst, t_etris *figure)
 	}
 }
 
+t_point		*point_new(int x, int y)
+{
+	t_point		*point;
+
+	point = ft_memalloc(sizeof(t_point));
+	point->x = x;
+	point->y = y;
+	return (point);
+}
+
 char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 {
 	int j;
@@ -235,6 +259,56 @@ char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
 	return (dst);
 }
 
+void	set_piece(t_etris *tetri, t_map *map, t_point *point, char c)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < tetri->width)
+	{
+		j = 0;
+		while (j < tetri->height)
+		{
+			if (tetri->pos[j][i] == '#')
+				map->array[point->y + j][point->x + i] = c;
+			j++;
+		}
+		i++;
+	}
+	ft_memdel((void **)&point);
+}
+
+
+int		place(t_etris *tetri, t_map *map, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < tetri->width)
+	{
+		j = 0;
+		while (j < tetri->height)
+		{
+			if (tetri->pos[j][i] == '#' && map->content[y + j][x + i] != '.')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	set_piece(tetri, map, point_new(x, y), tetri->value);
+	return (1);
+}
+
+/*
+** Sets a tetrimino on a map at a position with the specified character.
+** To place, call with c=tetri->value. To remove, call with c='.'.
+*/
+
+
+
+
 char**		ft_solve(t_etris *figure, char **map, int x, int y)
 {
 	int j;
@@ -259,6 +333,48 @@ char**		ft_solve(t_etris *figure, char **map, int x, int y)
 	}
 			//	break ;
 	return (NULL);
+}
+
+int		solve_map(t_map *map, t_etris *figure)
+{
+	int			x;
+	int			y;
+
+	y = 0;
+	while (y < map->size - figure->height + 1)
+	{
+		x = 0;
+		while (x < map->size - tetri->width + 1)
+		{
+			if (place(tetri, map, x, y))
+			{
+				if (solve_map(map, figure++))
+					return (1);
+				else
+					set_piece(tetri, map, point_new(x, y), '.');
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+
+t_map	*solve(t_list *list)
+{
+	t_map	*map;
+	int		size = 4;
+
+	map->content = ft_2darraynew(size, size, '.');
+	map->map_size = size;
+	while (!solve_map(map, list))
+	{
+		size++;
+//free_map(map);
+		map->content = ft_2darraynew(size, size, '.');
+	}
+	return (map);
 }
 
 int		main(int argc, char **argv)
@@ -321,48 +437,48 @@ int		main(int argc, char **argv)
 	int solved = 0;
 	int x = 0;
 	int y = 0;
-	while (!solved)
-	{
-		map = ft_2darraynew(map_size, map_size, '.');
-		map_size++;
-		i = 0;
-		while (i < j)
-		{
-			x = 0;
-			y = 0;
-			if (ft_solve(figures[i], map, x, y) == NULL)
-			{
-				//ft_printmap(map);
-				x++;
-				if (x > map_size - 1)
-				{
-					y++;
-					x = 0;
-					if (y > map_size - 1)
-						continue ;
-				}
-				if (i > 0)
-				{
-					ft_cleanfigure(map, figures[i - 1]);
-						ft_solve(figures[i - 1], map, x, y);
-				}
-				else
-				{
-					ft_cleanfigure(map, figures[i]);
-						ft_solve(figures[i], map, x, y);
-				}
-				//ft_printmap(map);
-				solved = 0;
-				break ;
-			}
-			else
-			{
-				solved = 1;
-			}
-			i++;
-
-		}
-	}
+	// while (!solved)
+	// {
+	// 	map = ft_2darraynew(map_size, map_size, '.');
+	// 	map_size++;
+	// 	i = 0;
+	// 	while (i < j)
+	// 	{
+	// 		x = 0;
+	// 		y = 0;
+	// 		if (ft_solve(figures[i], map, x, y) == NULL)
+	// 		{
+	// 			//ft_printmap(map);
+	// 			x++;
+	// 			if (x > map_size - 1)
+	// 			{
+	// 				y++;
+	// 				x = 0;
+	// 				if (y > map_size - 1)
+	// 					continue ;
+	// 			}
+	// 			if (i > 0)
+	// 			{
+	// 				ft_cleanfigure(map, figures[i - 1]);
+	// 					ft_solve(figures[i - 1], map, x, y);
+	// 			}
+	// 			else
+	// 			{
+	// 				ft_cleanfigure(map, figures[i]);
+	// 					ft_solve(figures[i], map, x, y);
+	// 			}
+	// 			//ft_printmap(map);
+	// 			solved = 0;
+	// 			break ;
+	// 		}
+	// 		else
+	// 		{
+	// 			solved = 1;
+	// 		}
+	// 		i++;
+	//
+	// 	}
+	// }
 	// map = ft_2darraynew(5, 5, '.');
 	// while (i < 4)
 	// {
