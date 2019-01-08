@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 13:35:07 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/08 13:44:40 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ int		main(int argc, char **argv)
 	{
 		figures[j] = malloc(sizeof(t_etris));
 		figures[j]->value = malloc(sizeof(char *) * 5);
+		figures[j++]->value[5] = NULL;
 	}
 	matrix = (char **)(malloc(sizeof(char *) * 5));
 	matrix[4] = NULL;
@@ -287,12 +288,13 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	j = 0;
+	j = 0;  // number of tettrinos 
+	int flag = 1; //._.
 	unsigned char c = 'A';
-	while (j < 4)
+	while (flag)
 	{
 		figures[j]->id = c++;
-		while (get_next_line(fd, &line) && i < 4)
+		while ((flag = get_next_line(fd, &line)) && i < 4)
 		{
 			figures[j]->value[i] = ft_strdup(line);
 			i++;
@@ -303,7 +305,7 @@ int		main(int argc, char **argv)
 		j++;
 	}
 	i = 0;
-	while (i < 4)
+	while (i < j)
 	{
 		ft_validate(figures[i]);
 		ft_getsizeY(figures[i]);
@@ -316,7 +318,7 @@ int		main(int argc, char **argv)
 
 	map = ft_2darraynew(5, 5, '.');
 	i = 0;
-	while (i < 4)
+	while (i < j)
 	{
 		ft_solve(figures[i], map);
 		i++;
