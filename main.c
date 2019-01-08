@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 20:12:28 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/08 22:30:18 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,10 +317,10 @@ int		main(int argc, char **argv)
 
 
 	i = 0;
-	int map_size = 10;
+	int map_size = 2;
 	int solved = 0;
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 	while (!solved)
 	{
 		map = ft_2darraynew(map_size, map_size, '.');
@@ -332,22 +332,35 @@ int		main(int argc, char **argv)
 			y = 0;
 			if (ft_solve(figures[i], map, x, y) == NULL)
 			{
-				ft_printmap(map);
-				i = i < 1 ? i : i - 1;
-				ft_cleanfigure(map, figures[i - 1]);
+				//ft_printmap(map);
 				x++;
-				if (x > map_size)
+				if (x > map_size - 1)
 				{
 					y++;
 					x = 0;
+					if (y > map_size - 1)
+						continue ;
 				}
-				ft_solve(figures[i - 1], map, x, y);
+				if (i > 0)
+				{
+					ft_cleanfigure(map, figures[i - 1]);
+						ft_solve(figures[i - 1], map, x, y);
+				}
+				else
+				{
+					ft_cleanfigure(map, figures[i]);
+						ft_solve(figures[i], map, x, y);
+				}
+				//ft_printmap(map);
 				solved = 0;
 				break ;
 			}
 			else
+			{
 				solved = 1;
+			}
 			i++;
+
 		}
 	}
 	// map = ft_2darraynew(5, 5, '.');
