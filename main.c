@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/08 13:44:40 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/08 14:23:56 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,20 +267,18 @@ int		main(int argc, char **argv)
 
 	char **matrix;
 	int i;
-	t_etris *figures[4];
+	t_etris *figures[16];
 	uint64_t temp;
 	int j;
 	char *line;
 
 	j = 0;
-	while (j < 4)
+	while (j < 16)
 	{
 		figures[j] = malloc(sizeof(t_etris));
 		figures[j]->value = malloc(sizeof(char *) * 5);
 		figures[j++]->value[5] = NULL;
 	}
-	matrix = (char **)(malloc(sizeof(char *) * 5));
-	matrix[4] = NULL;
 	i = 0;
 	if (argc < 2)
 	{
@@ -288,7 +286,7 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	j = 0;  // number of tettrinos 
+	j = 0;  // number of tettrinos
 	int flag = 1; //._.
 	unsigned char c = 'A';
 	while (flag)
@@ -303,7 +301,7 @@ int		main(int argc, char **argv)
 		figures[j]->value[i] = NULL;
 		i = 0;
 		j++;
-	}
+	 }
 	i = 0;
 	while (i < j)
 	{
@@ -316,12 +314,27 @@ int		main(int argc, char **argv)
 	}
 	char **map;
 
-	map = ft_2darraynew(5, 5, '.');
+
 	i = 0;
-	while (i < j)
+	int map_size = 10; //doenst work with 2
+	int solved = 0;
+	while (1 && !solved)
 	{
-		ft_solve(figures[i], map);
-		i++;
+
+		map = ft_2darraynew(map_size, map_size, '.');
+		map_size++;
+		i = 0;
+		while (i < j)
+		{
+			if (ft_solve(figures[i], map) == NULL)
+			{
+				solved = 0;
+				break;
+			}
+			else
+				solved = 1;
+			i++;
+		}
 	}
 	// map = ft_2darraynew(5, 5, '.');
 	// while (i < 4)
@@ -329,6 +342,6 @@ int		main(int argc, char **argv)
 	// 	ft_solve(figures[i], map);
 	// 	i++;
 	// }
-	 ft_printmap(map);
+	ft_printmap(map);
 	return (0);
 }
