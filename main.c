@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/09 02:38:19 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/10 00:20:59 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,8 @@ void	set_piece(t_etris *tetri, t_map *map, t_point *point, char c)
 		j = 0;
 		while (j < tetri->height)
 		{
-			if (tetri->pos[j][i] == '#')
-				map->array[point->y + j][point->x + i] = c;
+			if (tetri->value[j][i] == '#')
+				map->content[point->y + j][point->x + i] = c;
 			j++;
 		}
 		i++;
@@ -291,13 +291,13 @@ int		place(t_etris *tetri, t_map *map, int x, int y)
 		j = 0;
 		while (j < tetri->height)
 		{
-			if (tetri->pos[j][i] == '#' && map->content[y + j][x + i] != '.')
+			if (tetri->value[j][i] == '#' && map->content[y + j][x + i] != '.')
 				return (0);
 			j++;
 		}
 		i++;
 	}
-	set_piece(tetri, map, point_new(x, y), tetri->value);
+	set_piece(tetri, map, point_new(x, y), tetri->id);
 	return (1);
 }
 
@@ -335,23 +335,26 @@ char**		ft_solve(t_etris *figure, char **map, int x, int y)
 	return (NULL);
 }
 
-int		solve_map(t_map *map, t_etris *figure)
+int		solve_map(t_map *map, t_etris **figures)
 {
 	int			x;
 	int			y;
 
 	y = 0;
-	while (y < map->size - figure->height + 1)
+	ft_printmap(map->content);
+	//ft_printmap((*figures)->value);
+	//ft_printmap((*++figures)->value);
+	while (y < map->map_size - (*figures)->height + 1)
 	{
 		x = 0;
-		while (x < map->size - tetri->width + 1)
+		while (x < map->map_size - (*figures)->width + 1)
 		{
-			if (place(tetri, map, x, y))
+			if (place(*figures, map, x, y))
 			{
-				if (solve_map(map, figure++))
+				if (solve_map(map, (figures++))) //dsajdasjhkgj
 					return (1);
 				else
-					set_piece(tetri, map, point_new(x, y), '.');
+					set_piece(*figures, map, point_new(x, y), '.');
 			}
 			x++;
 		}
@@ -361,19 +364,22 @@ int		solve_map(t_map *map, t_etris *figure)
 }
 
 
-t_map	*solve(t_list *list)
+t_map	*solve(t_etris **figures)
 {
 	t_map	*map;
 	int		size = 4;
 
 	map->content = ft_2darraynew(size, size, '.');
 	map->map_size = size;
-	while (!solve_map(map, list))
-	{
-		size++;
-//free_map(map);
-		map->content = ft_2darraynew(size, size, '.');
-	}
+	solve_map(map, figures);
+	//ft_printmap(figures[0]->value);
+// 	while (!solve_map(map, *figures))
+// 	{
+// 		ft_printmap(map->content);
+// 		size++;
+// //free_map(map);
+// 		map->content = ft_2darraynew(size, size, '.');
+// 	}
 	return (map);
 }
 
@@ -384,12 +390,13 @@ int		main(int argc, char **argv)
 
 	char **matrix;
 	int i;
-	t_etris *figures[16];
+	t_etris **figures;
 	uint64_t temp;
 	int j;
 	char *line;
 
 	j = 0;
+	figures =malloc(sizeof(t_etris *) * 16);
 	while (j < 16)
 	{
 		figures[j] = malloc(sizeof(t_etris));
@@ -437,6 +444,7 @@ int		main(int argc, char **argv)
 	int solved = 0;
 	int x = 0;
 	int y = 0;
+	solve(figures);
 	// while (!solved)
 	// {
 	// 	map = ft_2darraynew(map_size, map_size, '.');
@@ -485,6 +493,6 @@ int		main(int argc, char **argv)
 	// 	ft_solve(figures[i], map);
 	// 	i++;
 	// }
-	ft_printmap(map);
+	//ft_printmap(map);
 	return (0);
 }
