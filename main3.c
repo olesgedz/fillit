@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/10 02:35:31 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/10 02:29:07 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,26 @@ char**		ft_2darraynew(size_t y, size_t x, char c)
 	return (new);
 }
 
+void		ft_cleanfigure(char **dst, t_etris *figure)
+{
+	int j;
+	int k;
+	j = 0;
+	while (j < ft_strlen(*dst))
+	{
+		k = 0;
+		while (k < ft_strlen(*dst))
+		{
+			if (dst[j][k] == figure->id)
+			{
+				dst[j][k] = '.';
+			}
+			k++;
+		}
+		j++;
+	}
+}
+
 t_point		*point_new(int x, int y)
 {
 	t_point		*point;
@@ -212,8 +232,161 @@ t_point		*point_new(int x, int y)
 	return (point);
 }
 
+char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
+{
+	int j;
+	int k;
+	j = 0;
+	while (j < 4)
+	{
+		k = 0;
+		while (k < 4)
+		{
+			if (figure->value[j][k] == '#')
+			{
+				if ((j + y >= ft_strlen(*dst))  || (k + x  >= ft_strlen(*dst)) || dst[j + y][k + x] != '.')
+				{
+					ft_cleanfigure(dst, figure);
+					return (NULL);
+				}
+				else
+					dst[j + y][k + x] = figure->id;
+			}
+			k++;
+		}
+		j++;
+	}
+	return (dst);
+}
+
+void	set_piece(t_etris *tetri, t_map *map, t_point *point, char c)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < tetri->width)
+	{
+		j = 0;
+		while (j < tetri->height)
+		{
+			if (tetri->value[j][i] == '#')
+				map->content[point->y + j][point->x + i] = c;
+			j++;
+		}
+		i++;
+	}
+	ft_memdel((void **)&point);
+}
 
 
+int		place(t_etris *tetri, t_map *map, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < tetri->width)
+	{
+		j = 0;
+		while (j < tetri->height)
+		{
+			if (tetri->value[j][i] == '#' && map->content[y + j][x + i] != '.')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	set_piece(tetri, map, point_new(x, y), tetri->id);
+	return (1);
+}
+
+/*
+** Sets a tetrimino on a map at a position with the specified character.
+** To place, call with c=tetri->value. To remove, call with c='.'.
+*/
+
+
+
+
+char**		ft_solve(t_etris *figure, char **map, int x, int y)
+{
+	int j;
+	int k;
+	int map_s;
+	int flag;
+
+	flag = 0;
+	//ft_printmap(figure->value);
+	map_s = ft_strlen(*map);
+	j = 0;
+	while(j < map_s)
+	{
+		k = 0;
+		while (k < map_s)
+		{
+			if (ft_putfigure(map, figure, k + x, j + y) != NULL)
+				return (map);
+			k++;
+		}
+		j++;
+	}
+			//	break ;
+	return (NULL);
+}
+
+int		solve_map(t_map *map, t_etris **figures)
+{
+	int			x;
+	int			y;
+	static int i = 0;
+	y = 0;
+	//ft_printmap(map->content);
+	//ft_printmap((*figures)->value);
+	//ft_printmap((*++figures)->value);
+	while (y < map->map_size - (*figures)->height + 1)
+	{
+		x = 0;
+		while (x < map->map_size - (*figures)->width + 1)
+		{
+			if (place(*figures, map, x, y))
+			{
+				if (solve_map(map, figures + 1)) //dsajdasjhkgj
+					return (1);
+				else
+					set_piece(*figures, map, point_new(x, y), '.');
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+
+t_map	*solve(t_etris **figures)
+{
+	t_map	*map;
+	int		size = 5;
+	int x = 0;
+	int y = 0;
+	int i = 0;
+	map->content = ft_2darraynew(size, size, '.');
+	map->map_size = size - 1;
+	solve_map(map, figures);
+	ft_printmap(figures[0]->value);
+	while (i < 100)
+	{	i++;
+	while (!ft_solve(*(figures++), map->content,  x, y))
+	{
+		ft_printmap(map->content);
+		size++;
+//free_map(map);
+		map->content = ft_2darraynew(size, size, '.');
+	}
+}
+	return (map);
+}
 
 int		main(int argc, char **argv)
 {
@@ -276,7 +449,55 @@ int		main(int argc, char **argv)
 	int solved = 0;
 	int x = 0;
 	int y = 0;
-	map->content = ft_2darraynew(map_size, map_size, '.'); 
+	map = solve(figures);
+	// while (!solved)
+	// {
+	// 	map = ft_2darraynew(map_size, map_size, '.');
+	// 	map_size++;
+	// 	i = 0;
+	// 	while (i < j)
+	// 	{
+	// 		x = 0;
+	// 		y = 0;
+	// 		if (ft_solve(figures[i], map, x, y) == NULL)
+	// 		{
+	// 			//ft_printmap(map);
+	// 			x++;
+	// 			if (x > map_size - 1)
+	// 			{
+	// 				y++;
+	// 				x = 0;
+	// 				if (y > map_size - 1)
+	// 					continue ;
+	// 			}
+	// 			if (i > 0)
+	// 			{
+	// 				ft_cleanfigure(map, figures[i - 1]);
+	// 					ft_solve(figures[i - 1], map, x, y);
+	// 			}
+	// 			else
+	// 			{
+	// 				ft_cleanfigure(map, figures[i]);
+	// 					ft_solve(figures[i], map, x, y);
+	// 			}
+	// 			//ft_printmap(map);
+	// 			solved = 0;
+	// 			break ;
+	// 		}
+	// 		else
+	// 		{
+	// 			solved = 1;
+	// 		}
+	// 		i++;
+	//
+	// 	}
+	// }
+	// map = ft_2darraynew(5, 5, '.');
+	// while (i < 4)
+	// {
+	// 	ft_solve(figures[i], map);
+	// 	i++;
+	// }
 	ft_printmap(map->content);
 	return (0);
 }
