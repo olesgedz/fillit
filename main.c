@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/10 02:35:31 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/11 20:21:39 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,59 @@ char		**ft_normfigure(char **dst, t_etris *figure)
 	return (dst);
 }
 
+int		ft_clean_figure(t_map *map, t_etris *figure)
+{
+	int k;
+	int j;
+
+	j = 0;
+	while (j < map->map_size)
+	{
+		k = 0;
+		while (k < map->map_size)
+		{
+			if (map->content[j][k] == figure->id)
+				map->content[j][k] = '.';
+			k++;
+		}
+		j++;
+	}
+	return (0);
+}
+
+int		ft_putfigure(t_map *map, t_etris *figure, t_point *position)
+{
+	int j;
+	int k;
+
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+
+	j = 0;
+	while (j < map->map_size)
+	{
+		k = 0;
+		x = 0;
+		while (k < map->map_size)
+		{
+			if (map->content[j][k] == '.' && figure->value[y][x] == '#')
+			{
+				map->content[j][k] = figure->id;
+			}
+			else
+				ft_clean_figure(map, figure);
+			k++;
+			x++;
+		}
+		j++;
+		y++;
+	}
+	return (0);
+}
+
 char**		ft_2darraynew(size_t y, size_t x, char c)
 {
 	char** new;
@@ -269,14 +322,11 @@ int		main(int argc, char **argv)
 		i++;
 	}
 	t_map *map;
-
-
-	i = 0;
-	int map_size = 2;
-	int solved = 0;
-	int x = 0;
-	int y = 0;
-	map->content = ft_2darraynew(map_size, map_size, '.'); 
+	int size = 3;
+	map->content = ft_2darraynew(size, size, '.');
+	map->map_size = size;
+	ft_putfigure(map, figures[0], point_new(0,0));
+	ft_putfigure(map, figures[1], point_new(0,0));
 	ft_printmap(map->content);
 	return (0);
 }
