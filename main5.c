@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/29 18:10:33 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/10 02:29:07 by olesgedz         ###   ########.fr       */
+/*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
+/*   Updated: 2019/01/11 23:09:12 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_etris	t_etris;
 
 struct				s_etris
 {
-	char				**value;
+	char				**content;
 	int 					valid;
 	t_etris				*last;
 	unsigned char		id;
@@ -31,13 +31,11 @@ struct				s_etris
 	unsigned char		height;
 };
 
-typedef struct s_map	t_map;
-
-struct			s_map
+typedef struct s_map
 {
 	char **content;
-	int map_size;
-};
+	int size;
+} t_map;
 
 typedef struct	s_point
 {
@@ -81,12 +79,12 @@ int		ft_validate(t_etris *figure)
 	while (j < 4)
 	{
 		k = 0;
-		ft_checkwidth(figure->value, j, &map);
+		ft_checkwidth(figure->content, j, &map);
 		while (k < 4)
 		{
-			if ((figure->value)[j][k] != '#' && (figure->value)[j][k] != '.')
+			if ((figure->content)[j][k] != '#' && (figure->content)[j][k] != '.')
 				map = 0;
-			ft_count_nieghbors(j, k++, &count, figure->value);
+			ft_count_nieghbors(j, k++, &count, figure->content);
 		}
 		j++;
 	}
@@ -108,7 +106,7 @@ int		ft_getsizeY(t_etris *figure)
 	start = -1;
 	while (j < 4)
 	{
-		if (ft_strchr(figure->value[j], '#'))
+		if (ft_strchr(figure->content[j], '#'))
 		{
 			if (start == -1)
 				start = j;
@@ -136,7 +134,7 @@ int		ft_getsizeX(t_etris *figure)
 		k = 0;
 		while (k < 4)
 		{
-			if (figure->value[j][k] == '#')
+			if (figure->content[j][k] == '#')
 			{
 				if (start > k)
 					start = k;
@@ -162,17 +160,73 @@ char		**ft_normfigure(char **dst, t_etris *figure)
 		k = figure->x;
 		while (k < figure->width + figure->x)
 		{
-			if (figure->value[j][k] == '#')
+			if (figure->content[j][k] == '#')
 			{
-				figure->value[j - figure->y][k - figure->x] = \
-				figure->value[j][k];
-				figure->value[j][k] = '.';
+				figure->content[j - figure->y][k - figure->x] = \
+				figure->content[j][k];
+				figure->content[j][k] = '.';
 			}
 			k++;
 		}
 		j++;
 	}
 	return (dst);
+}
+
+int		ft_cleanfigure(t_map *map, t_etris *figure)
+{
+	int k;
+	int j;
+
+	j = 0;
+	while (j < map->size)
+	{
+		k = 0;
+		while (k < map->size)
+		{
+			if (map->content[j][k] == figure->id)
+				map->content[j][k] = '.';
+			k++;
+		}
+		j++;
+	}
+	return (0);
+}
+
+int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
+{
+	int j;
+	int k;
+
+	j = 0;
+	while (j < 4)
+	{
+		k = 0;
+		while (k < 4)
+		{
+			if (figure->content[j][k] == '#')
+			{
+				if (j + p->y >= map->size  || k + p->x  >= map->size)
+				{
+					ft_cleanfigure(map, figure);
+					return (0);
+				}
+				else
+				{
+					if (map->content[j + p->y][k + p->x] != '.')
+					{
+						ft_cleanfigure(map, figure);
+						return (0);
+					}
+					else
+						map->content[j + p->y][k + p->x] = figure->id;
+				}
+			}
+			k++;
+		}
+		j++;
+	}
+	return (1);
 }
 
 char**		ft_2darraynew(size_t y, size_t x, char c)
@@ -202,26 +256,6 @@ char**		ft_2darraynew(size_t y, size_t x, char c)
 	return (new);
 }
 
-void		ft_cleanfigure(char **dst, t_etris *figure)
-{
-	int j;
-	int k;
-	j = 0;
-	while (j < ft_strlen(*dst))
-	{
-		k = 0;
-		while (k < ft_strlen(*dst))
-		{
-			if (dst[j][k] == figure->id)
-			{
-				dst[j][k] = '.';
-			}
-			k++;
-		}
-		j++;
-	}
-}
-
 t_point		*point_new(int x, int y)
 {
 	t_point		*point;
@@ -232,79 +266,8 @@ t_point		*point_new(int x, int y)
 	return (point);
 }
 
-char		**ft_putfigure(char **dst, t_etris *figure, int x, int y)
-{
-	int j;
-	int k;
-	j = 0;
-	while (j < 4)
-	{
-		k = 0;
-		while (k < 4)
-		{
-			if (figure->value[j][k] == '#')
-			{
-				if ((j + y >= ft_strlen(*dst))  || (k + x  >= ft_strlen(*dst)) || dst[j + y][k + x] != '.')
-				{
-					ft_cleanfigure(dst, figure);
-					return (NULL);
-				}
-				else
-					dst[j + y][k + x] = figure->id;
-			}
-			k++;
-		}
-		j++;
-	}
-	return (dst);
-}
-
-void	set_piece(t_etris *tetri, t_map *map, t_point *point, char c)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < tetri->width)
-	{
-		j = 0;
-		while (j < tetri->height)
-		{
-			if (tetri->value[j][i] == '#')
-				map->content[point->y + j][point->x + i] = c;
-			j++;
-		}
-		i++;
-	}
-	ft_memdel((void **)&point);
-}
 
 
-char**		ft_solve(t_etris *figure, char **map, int x, int y)
-{
-	int j;
-	int k;
-	int map_s;
-	int flag;
-
-	flag = 0;
-	//ft_printmap(figure->value);
-	map_s = ft_strlen(*map);
-	j = 0;
-	while(j < map_s)
-	{
-		k = 0;
-		while (k < map_s)
-		{
-			if (ft_putfigure(map, figure, k + x, j + y) != NULL)
-				return (map);
-			k++;
-		}
-		j++;
-	}
-			//	break ;
-	return (NULL);
-}
 
 int		main(int argc, char **argv)
 {
@@ -315,16 +278,16 @@ int		main(int argc, char **argv)
 	int i;
 	t_etris **figures;
 	uint64_t temp;
-	int j;
+	int number;
 	char *line;
 
-	j = 0;
+	number= 0;
 	figures =malloc(sizeof(t_etris *) * 16);
-	while (j < 16)
+	while (number< 16)
 	{
-		figures[j] = malloc(sizeof(t_etris));
-		figures[j]->value = malloc(sizeof(char *) * 5);
-		figures[j++]->value[5] = NULL;
+		figures[number] = malloc(sizeof(t_etris));
+		figures[number]->content = malloc(sizeof(char *) * 5);
+		figures[number++]->content[5] = NULL;
 	}
 	i = 0;
 	if (argc < 2)
@@ -333,87 +296,87 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	j = 0;  // number of tettrinos
+	number = 0;  // number of tettrinos
 	int flag = 1; //._.
 	unsigned char c = 'A';
 	while (flag)
 	{
-		figures[j]->id = c++;
+		figures[number]->id = c++;
 		while ((flag = get_next_line(fd, &line)) && i < 4)
 		{
-			figures[j]->value[i] = ft_strdup(line);
+			figures[number]->content[i] = ft_strdup(line);
 			i++;
 			free(line);
 		}
-		figures[j]->value[i] = NULL;
+		figures[number]->content[i] = NULL;
 		i = 0;
-		j++;
+		number++;
 	 }
 	i = 0;
-	while (i < j)
+	while (i < number)
 	{
 		ft_validate(figures[i]);
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
-		ft_normfigure(figures[i]->value, figures[i]);
+		ft_normfigure(figures[i]->content, figures[i]);
 		//ft_printmap(figures[i]->value);
 		i++;
 	}
- char **map = ft_2darraynew(2, 2, '.');
-
+	t_map *map = malloc(sizeof(t_map *));
+	map->size = 4;
+	//map->content = ft_2darraynew(map->size, map->size, '.');
+	int j;
+	int k;
+	j= 0;
 	i = 0;
-	int map_size = 2;
-	int solved = 0;
 	int x = 0;
 	int y = 0;
+	int solved = 0;
 	while (!solved)
 	{
-		map = ft_2darraynew(map_size, map_size, '.');
-		map_size++;
-		i = 0;
-		while (i < j)
+		map->content = ft_2darraynew(map->size, map->size, '.');
+		while(i < number)
 		{
-			x = 0;
-			y = 0;
-			if (ft_solve(figures[i], map, x, y) == NULL)
+			if (ft_putfigure(map, figures[i], point_new(x, y)))
 			{
-				//ft_printmap(map);
-				x++;
-				if (x > map_size - 1)
-				{
-					y++;
-					x = 0;
-					if (y > map_size - 1)
-						continue ;
-				}
-				if (i > 0)
-				{
-					ft_cleanfigure(map, figures[i - 1]);
-						ft_solve(figures[i - 1], map, x, y);
-				}
-				else
-				{
-					ft_cleanfigure(map, figures[i]);
-						ft_solve(figures[i], map, x, y);
-				}
-				//ft_printmap(map);
-				solved = 0;
-				break ;
+				ft_printmap(map->content);
+				ft_putchar('\n');
+				i++;
+				if (i >= number)
+					solved = 1;
+				//break;
 			}
 			else
 			{
-				solved = 1;
+				x++;
+				if (x > map->size)
+				{
+					x = 0;
+					y++;
+				}
+				if (y > map->size)
+				{
+					map->size++;
+					break;
+				}
+
 			}
-			i++;
-	
+
+			// else
+			// {
+			// 	x++;
+			// 	if (x > map->size)
+			// 	{
+			// 		y++;
+			// 		x = 0;
+			// 	}
+			// 	// if (y > map->size)
+			// 	// 	i--;
+			// 	// if (i < 0)
+			// 	// 	break;
+			// }
 		}
 	}
-	// map = ft_2darraynew(5, 5, '.');
-	// while (i < 4)
-	// {
-	// 	ft_solve(figures[i], map);
-	// 	i++;
-	// }
-	ft_printmap(map);
+	ft_printmap(map->content);
 	return (0);
 }
