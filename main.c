@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/13 23:50:28 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/14 02:05:34 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,11 +206,11 @@ int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
 		k = 0;
 		while (k < 4)
 		{
-			ft_printmap(map->content);
-				ft_putchar('\n');
+			// ft_printmap(map->content);
+			// 	ft_putchar('\n');
 			if (figure->content[j][k] == '#')
 			{
-				if (j + p->y >= map->size  || k + p->x  >= map->size)
+				if (j + p->y >= map->size  || k + p->x  >=  map->size)
 				{
 					ft_cleanfigure(map, figure);
 					return (0);
@@ -282,9 +282,10 @@ int		ft_solve(t_map *map, t_etris **figure)
 	//printf("%pHERE\n", (*figure)->content);
 	if ((*figure)->content == NULL)
 		return (1);
-	while (y < map->size - (*figure)->width)
+	while (y < map->size)
 	{
-		while (x < map->size - (*figure)->height)
+		x = 0;
+		while (x < map->size)
 		{
 			if (ft_putfigure(map, *figure, point_new(x, y)))
 			{
@@ -295,7 +296,6 @@ int		ft_solve(t_map *map, t_etris **figure)
 			//printf("x:%d, y:%d\n", x, y);
 			x++;
 		}
-		x = 0;
 		y++;
 	}
 	return (0);
@@ -370,7 +370,7 @@ int		main(int argc, char **argv)
 	}
 
 	t_map *map = malloc(sizeof(t_map));
-	map->size = 4;
+	map->size = 3;
 int l = 0;
 	//ft_test(map, figures);
 	// while (l < 16 && figures[l]->content != NULL)
@@ -385,8 +385,6 @@ int l = 0;
 				break ;
 			else
 				map->size++;
-			if (map->size > 5)
-				exit(0);
 		//ft_printmap(map->content);
 	}
 	ft_printmap(map->content);
