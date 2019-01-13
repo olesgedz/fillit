@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 02:05:34 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/14 02:45:57 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,8 @@ int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
 		k = 0;
 		while (k < 4)
 		{
-			// ft_printmap(map->content);
-			// 	ft_putchar('\n');
+			 ft_printmap(map->content);
+			 	ft_putchar('\n');
 			if (figure->content[j][k] == '#')
 			{
 				if (j + p->y >= map->size  || k + p->x  >=  map->size)
@@ -365,7 +365,7 @@ int		main(int argc, char **argv)
 
 		ft_normfigure(figures[i]->content, figures[i]);
 	// 	printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
-	//ft_printmap(figures[i]->content);
+	ft_printmap(figures[i]->content);
 		i++;
 	}
 
@@ -378,16 +378,16 @@ int l = 0;
 	// 	printf("ALL:%p\n", figures++);
 	// 	l++;
 	// }
-	while (1)
-	{
-			map->content = ft_2darraynew(map->size, map->size, '.');
-			if (ft_solve(map, figures))
-				break ;
-			else
-				map->size++;
-		//ft_printmap(map->content);
-	}
-	ft_printmap(map->content);
+	// while (1)
+	// {
+	// 		map->content = ft_2darraynew(map->size, map->size, '.');
+	// 		if (ft_solve(map, figures))
+	// 			break ;
+	// 		else
+	// 			map->size++;
+	// 	//ft_printmap(map->content);
+	// }
+	// ft_printmap(map->content);
 
 	return (0);
 }
