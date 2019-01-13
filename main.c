@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/13 19:07:55 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/13 23:05:20 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,18 +273,18 @@ t_point		*point_new(int x, int y)
 	return (point);
 }
 
-int		ft_solve(t_map *map, t_etris *figure)
+int		ft_solve(t_map *map, t_etris **figure)
 {
 	int x = 0;
 	int y = 0;
-	printf("%pHERE\n", figure->content);
-	if (figure->content == NULL)
+	printf("%pHERE\n", (*figure)->content);
+	if ((*figure)->content == NULL)
 		return (1);
-	while (y <= map->size - figure->width)
+	while (y <= map->size - (*figure)->width)
 	{
-		while (x <= map->size - figure->height)
+		while (x <= map->size - (*figure)->height)
 		{
-			if (ft_putfigure(map, figure, point_new(x, y)))
+			if (ft_putfigure(map, *figure, point_new(x, y)))
 			{
 				ft_printmap(map->content);
 				if (ft_solve(map, figure + 1))
@@ -301,7 +301,7 @@ int		ft_solve(t_map *map, t_etris *figure)
 
 int		ft_test(t_map *map, t_etris **figure)
 {
-	*figure++;
+	figure+=0;
 	ft_printmap((*figure)->content);
 	return (0);
 }
@@ -369,21 +369,21 @@ int		main(int argc, char **argv)
 	t_map *map = malloc(sizeof(t_map));
 	map->size = 2;
 int l = 0;
-	ft_test(map, figures);
+	//ft_test(map, figures);
 	// while (l < 16 && figures[l]->content != NULL)
 	// {
 	// 	printf("ALL:%p\n", figures++);
 	// 	l++;
 	// }
-	// while (1)
-	// {
-	// 		map->content = ft_2darraynew(map->size, map->size, '.');
-	// 		if (ft_solve(map, &figures[0]))
-	// 			break ;
-	// 		else
-	// 			map->size++;
-	// 	ft_printmap(map->content);
-	// }
-	// ft_printmap(map->content);
+	while (1)
+	{
+			map->content = ft_2darraynew(map->size, map->size, '.');
+			if (ft_solve(map, figures))
+				break ;
+			else
+				map->size++;
+		ft_printmap(map->content);
+	}
+	ft_printmap(map->content);
 	return (0);
 }
