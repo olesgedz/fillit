@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/13 19:03:19 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/13 19:07:55 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ int		ft_solve(t_map *map, t_etris *figure)
 {
 	int x = 0;
 	int y = 0;
-
+	printf("%pHERE\n", figure->content);
 	if (figure->content == NULL)
 		return (1);
 	while (y <= map->size - figure->width)
@@ -286,7 +286,8 @@ int		ft_solve(t_map *map, t_etris *figure)
 		{
 			if (ft_putfigure(map, figure, point_new(x, y)))
 			{
-				if (ft_solve(map, figure++))
+				ft_printmap(map->content);
+				if (ft_solve(map, figure + 1))
 					return (1);
 			}
 			printf("x:%d, y:%d\n", x, y);
@@ -298,6 +299,12 @@ int		ft_solve(t_map *map, t_etris *figure)
 	return (0);
 }
 
+int		ft_test(t_map *map, t_etris **figure)
+{
+	*figure++;
+	ft_printmap((*figure)->content);
+	return (0);
+}
 
 int		main(int argc, char **argv)
 {
@@ -346,31 +353,32 @@ int		main(int argc, char **argv)
 	// figures[number -1]->content = NULL;
 	i = 0;
 	printf("ll%d\n", number);
-	ft_printmap(figures[1]->content);
-	// while (i < number - 1)
-	// {
-	// 	ft_validate(figures[i]);
-	// //	ft_getsizeY(figures[i]);
-	// 	//ft_getsizeX(figures[i]);
-	// //
-	// // 	ft_normfigure(figures[i]->content, figures[i]);
-	// // 	printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
-	// ft_printmap(figures[i]->content);
-	// 	i++;
-	// }
+	//ft_printmap(figures[1]->content);
+	while (i < number)
+	{
+		ft_validate(figures[i]);
+		ft_getsizeY(figures[i]);
+		ft_getsizeX(figures[i]);
 
-	// t_map *map = malloc(sizeof(t_map));
-	// map->size = 2;
-// int l = 0;
-// 	while (l < 16 && figures[l]->content != NULL)
-// 	{
-// 		printf("%p\n", figures++);
-// 		l++;
-// 	}
+		ft_normfigure(figures[i]->content, figures[i]);
+	// 	printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
+	//ft_printmap(figures[i]->content);
+		i++;
+	}
+
+	t_map *map = malloc(sizeof(t_map));
+	map->size = 2;
+int l = 0;
+	ft_test(map, figures);
+	// while (l < 16 && figures[l]->content != NULL)
+	// {
+	// 	printf("ALL:%p\n", figures++);
+	// 	l++;
+	// }
 	// while (1)
 	// {
 	// 		map->content = ft_2darraynew(map->size, map->size, '.');
-	// 		if (ft_solve(map, figures[0]))
+	// 		if (ft_solve(map, &figures[0]))
 	// 			break ;
 	// 		else
 	// 			map->size++;
