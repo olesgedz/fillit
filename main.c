@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/11 23:09:12 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/13 19:03:19 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,10 +312,12 @@ int		main(int argc, char **argv)
 	char *line;
 
 	number= 0;
-	figures =malloc(sizeof(t_etris *) * 16);
+	figures =malloc(sizeof(t_etris *) * 26);
 	while (number < 26)
 	{
-		figures[number++] = malloc(sizeof(t_etris));
+		figures[number] = malloc(sizeof(t_etris));
+		figures[number]->content= NULL;
+		number++;
 	}
 	i = 0;
 	if (argc < 2)
@@ -330,41 +332,42 @@ int		main(int argc, char **argv)
 	while (flag)
 	{
 		figures[number]->id = c++;
+		figures[number]->content = (char **)malloc(sizeof(char *) * 5);
 		while ((flag = get_next_line(fd, &line)) && i < 4)
 		{
-			figures[number]->content = malloc(sizeof(char *) * 5);
-	//		figures[number]->content[5] = NULL;
 			figures[number]->content[i] = ft_strdup(line);
-			i++;
 			free(line);
+			i++;
 		}
-		figures[number]->content[i] = NULL;
+		figures[number]->content[4] = NULL;
 		i = 0;
 		number++;
 	 }
-	 figures[number]->content = NULL;
+	// figures[number -1]->content = NULL;
 	i = 0;
 	printf("ll%d\n", number);
-	while (i < number - 1)
-	{
-		ft_validate(figures[i]);
-		ft_getsizeY(figures[i]);
-		ft_getsizeX(figures[i]);
+	ft_printmap(figures[1]->content);
+	// while (i < number - 1)
+	// {
+	// 	ft_validate(figures[i]);
+	// //	ft_getsizeY(figures[i]);
+	// 	//ft_getsizeX(figures[i]);
+	// //
+	// // 	ft_normfigure(figures[i]->content, figures[i]);
+	// // 	printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
+	// ft_printmap(figures[i]->content);
+	// 	i++;
+	// }
 
-		ft_normfigure(figures[i]->content, figures[i]);
-		printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
-		ft_printmap(figures[i]->content);
-		i++;
-	}
-	
-	t_map *map = malloc(sizeof(t_map));
-	map->size = 2;
-	int l = 0;
-	while (l < 16)
-	{
-		printf("%p\n", figures++);
-		l++;
-	}// while (1)
+	// t_map *map = malloc(sizeof(t_map));
+	// map->size = 2;
+// int l = 0;
+// 	while (l < 16 && figures[l]->content != NULL)
+// 	{
+// 		printf("%p\n", figures++);
+// 		l++;
+// 	}
+	// while (1)
 	// {
 	// 		map->content = ft_2darraynew(map->size, map->size, '.');
 	// 		if (ft_solve(map, figures[0]))
