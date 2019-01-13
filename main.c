@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/13 23:05:20 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/13 23:16:02 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ int		ft_solve(t_map *map, t_etris **figure)
 {
 	int x = 0;
 	int y = 0;
-	printf("%pHERE\n", (*figure)->content);
+	//printf("%pHERE\n", (*figure)->content);
 	if ((*figure)->content == NULL)
 		return (1);
 	while (y <= map->size - (*figure)->width)
@@ -286,11 +286,11 @@ int		ft_solve(t_map *map, t_etris **figure)
 		{
 			if (ft_putfigure(map, *figure, point_new(x, y)))
 			{
-				ft_printmap(map->content);
+				//ft_printmap(map->content);
 				if (ft_solve(map, figure + 1))
 					return (1);
 			}
-			printf("x:%d, y:%d\n", x, y);
+			//printf("x:%d, y:%d\n", x, y);
 			x++;
 		}
 		x = 0;
@@ -352,11 +352,12 @@ int		main(int argc, char **argv)
 	 }
 	// figures[number -1]->content = NULL;
 	i = 0;
-	printf("ll%d\n", number);
+	//printf("ll%d\n", number);
 	//ft_printmap(figures[1]->content);
 	while (i < number)
 	{
-		ft_validate(figures[i]);
+		if (!ft_validate(figures[i]))
+			return (0);
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
 
@@ -382,7 +383,7 @@ int l = 0;
 				break ;
 			else
 				map->size++;
-		ft_printmap(map->content);
+		//ft_printmap(map->content);
 	}
 	ft_printmap(map->content);
 	return (0);
