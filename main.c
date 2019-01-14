@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 02:45:57 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/14 02:57:57 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,14 +157,15 @@ char		**ft_normfigure(char **dst, t_etris *figure)
 	j = figure->y;
 	while (j < figure->height + figure->y)
 	{
+		// ft_printmap(dst);
+		// ft_putchar('\n');
 		k = figure->x;
 		while (k < figure->width + figure->x)
 		{
 			if (figure->content[j][k] == '#')
 			{
-				figure->content[j - figure->y][k - figure->x] = \
-				figure->content[j][k];
-				figure->content[j][k] = '.';
+								figure->content[j][k] = '.';
+				figure->content[j - figure->y][k - figure->x] = '#';
 			}
 			k++;
 		}
@@ -206,8 +207,8 @@ int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
 		k = 0;
 		while (k < 4)
 		{
-			 ft_printmap(map->content);
-			 	ft_putchar('\n');
+			 // ft_printmap(map->content);
+			 // 	ft_putchar('\n');
 			if (figure->content[j][k] == '#')
 			{
 				if (j + p->y >= map->size  || k + p->x  >=  map->size)
@@ -364,13 +365,13 @@ int		main(int argc, char **argv)
 		ft_getsizeX(figures[i]);
 
 		ft_normfigure(figures[i]->content, figures[i]);
-	// 	printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
-	ft_printmap(figures[i]->content);
+		//printf("x:%d, y:%d w:%d h:%d\n", figures[i]->x, figures[i]->y, figures[i]->width, figures[i]->height);
+	//ft_printmap(figures[i]->content);
 		i++;
 	}
 
 	t_map *map = malloc(sizeof(t_map));
-	map->size = 3;
+	map->size = 2;
 int l = 0;
 	//ft_test(map, figures);
 	// while (l < 16 && figures[l]->content != NULL)
@@ -378,16 +379,16 @@ int l = 0;
 	// 	printf("ALL:%p\n", figures++);
 	// 	l++;
 	// }
-	// while (1)
-	// {
-	// 		map->content = ft_2darraynew(map->size, map->size, '.');
-	// 		if (ft_solve(map, figures))
-	// 			break ;
-	// 		else
-	// 			map->size++;
-	// 	//ft_printmap(map->content);
-	// }
-	// ft_printmap(map->content);
+	while (1)
+	{
+			map->content = ft_2darraynew(map->size, map->size, '.');
+			if (ft_solve(map, figures))
+				break ;
+			else
+				map->size++;
+		//ft_printmap(map->content);
+	}
+	ft_printmap(map->content);
 
 	return (0);
 }
