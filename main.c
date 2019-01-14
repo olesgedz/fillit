@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/14 21:12:09 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/15 00:34:37 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ void		ft_count_nieghbors(int j, int k, int *count, char **temp)
 		if (j + 1 <= 3 && temp[j + 1][k] == '#')
 			*count += 1;
 	}
+}
+
+t_point		*ft_point_new(int x, int y)
+{
+	t_point		*point;
+
+	point = ft_memalloc(sizeof(t_point));
+	point->x = x;
+	point->y = y;
+	return (point);
 }
 
 int		ft_checkwidth(char **figure, int j, int *map)
@@ -175,71 +185,115 @@ char		**ft_normfigure(char **dst, t_etris *figure)
 	figure->x = 0;
 	return (dst);
 }
+/**********************/
 
-int		ft_cleanfigure(t_map *map, t_etris *figure)
+void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 {
-	int k;
+	int i;
 	int j;
 
-	j = 0;
-	while (j < map->size)
+	i = 0;
+	while (i < tetri->width)
 	{
-		k = 0;
-		while (k < map->size)
+		j = 0;
+		while (j < tetri->height)
 		{
-			if (map->content[j][k] == figure->id)
-				map->content[j][k] = '.';
-			k++;
+			if (tetri->content[j][i] == '#')
+				map->content[point->y + j][point->x + i] = c;
+			j++;
 		}
-		j++;
+		i++;
 	}
-	return (0);
+	ft_memdel((void **)&point);
 }
 
-int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
+int		ft_checkplace(t_etris *tetri, t_map *map, t_point *p)
 {
+	int i;
 	int j;
-	int k;
-	int count = 0;
-	j = 0;
 
-	//ft_cleanfigure(map, figure);
-	while (j < 4)
+	i = 0;
+	while (i < tetri->width)
 	{
-		k = 0;
-		while (k < 4)
+		j = 0;
+		while (j < tetri->height)
 		{
-			  // ft_printmap(map->content);
-			  // 	ft_putchar('\n');
-			if (figure->content[j][k] == '#')
-			{
-				if (j + p->y >= map->size || k + p->x  >= map->size)
-				{
-					ft_cleanfigure(map, figure);
-					return (0);
-				}
-				else
-				{
-					if (map->content[j + p->y][k + p->x] != '.')
-					{
-						ft_cleanfigure(map, figure);
-						return (0);
-					}
-					else
-					{
-						count++;
-						map->content[j + p->y][k + p->x] = figure->id;
-						if (count >= 4)
-							return (1);
-					}
-				}
-			}
-			k++;
+			if (tetri->content[j][i] == '#' && map->content[p->y + j][p->x + i] != '.')
+				return (0);
+			j++;
 		}
-		j++;
+		i++;
 	}
-	return (0);
+	ft_putfigure(tetri, map, ft_point_new(p->x, p->y), tetri->id);
+	return (1);
 }
+
+
+
+// int		ft_cleanfigure(t_map *map, t_etris *figure)
+// {
+// 	int k;
+// 	int j;
+//
+// 	j = 0;
+// 	while (j < map->size)
+// 	{
+// 		k = 0;
+// 		while (k < map->size)
+// 		{
+// 			if (map->content[j][k] == figure->id)
+// 				map->content[j][k] = '.';
+// 			k++;
+// 		}
+// 		j++;
+// 	}
+// 	return (0);
+// }
+
+// int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
+// {
+// 	int j;
+// 	int k;
+// 	int count = 0;
+// 	j = 0;
+//
+// 	//ft_cleanfigure(map, figure);
+// 	while (j < 4)
+// 	{
+// 		k = 0;
+// 		while (k < 4)
+// 		{
+// 			  // ft_printmap(map->content);
+// 			  // 	ft_putchar('\n');
+// 			if (figure->content[j][k] == '#')
+// 			{
+// 				if (j + p->y >= map->size || k + p->x  >= map->size)
+// 				{
+// 					ft_cleanfigure(map, figure);
+// 					return (0);
+// 				}
+// 				else
+// 				{
+// 					if (map->content[j + p->y][k + p->x] != '.')
+// 					{
+// 						ft_cleanfigure(map, figure);
+// 						return (0);
+// 					}
+// 					else
+// 					{
+// 						count++;
+// 						map->content[j + p->y][k + p->x] = figure->id;
+// 						if (count >= 4)
+// 							return (1);
+// 					}
+// 				}
+// 			}
+// 			k++;
+// 		}
+// 		j++;
+// 	}
+// 	return (0);
+// }
 
 char**		ft_2darraynew(size_t y, size_t x, char c)
 {
@@ -268,15 +322,7 @@ char**		ft_2darraynew(size_t y, size_t x, char c)
 	return (new);
 }
 
-t_point		*point_new(int x, int y)
-{
-	t_point		*point;
 
-	point = ft_memalloc(sizeof(t_point));
-	point->x = x;
-	point->y = y;
-	return (point);
-}
 
 int		ft_solve(t_map *map, t_etris **figure)
 {
@@ -291,12 +337,14 @@ int		ft_solve(t_map *map, t_etris **figure)
 		x = 0;
 		while (x < map->size - (*figure)->width + 2)
 		{
-			if (ft_putfigure(map, *figure, point_new(x, y)))
+			if (ft_checkplace(*figure, map, ft_point_new(x, y)))
 			{
 				//ft_printmap(map->content);
 				if (ft_solve(map, figure + 1))
 					return (1);
-					ft_cleanfigure(map, *figure);
+					//ft_cleanfigure(map, *figure);
+					ft_putfigure(*figure, map, ft_point_new(x, y), '.');
+
 			}
 			//printf("x:%d, y:%d\n", x, y);
 			x++;
@@ -305,6 +353,17 @@ int		ft_solve(t_map *map, t_etris **figure)
 	}
 	return (0);
 }
+
+int		ft_minmap(int n)
+{
+	int size;
+
+	size = 2;
+	while (size * size < n)
+		size++;
+	return (size);
+}
+
 
 int		ft_test(t_map *map, t_etris **figure)
 {
@@ -396,7 +455,7 @@ int		main(int argc, char **argv)
 	}
 
 	t_map *map = malloc(sizeof(t_map));
-	map->size = 2;
+	map->size = ft_minmap(number * 4);
 	while (1)
 	{
 			map->content = ft_2darraynew(map->size, map->size, '.');
