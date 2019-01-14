@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 15:53:44 by jblack-b         ###   ########.fr       */
+/*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
+/*   Updated: 2019/01/14 16:26:23 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
 	int count = 0;
 	j = 0;
 
-	ft_cleanfigure(map, figure);
+	//ft_cleanfigure(map, figure);
 	while (j < 4)
 	{
 		k = 0;
@@ -296,6 +296,7 @@ int		ft_solve(t_map *map, t_etris **figure)
 				//ft_printmap(map->content);
 				if (ft_solve(map, figure + 1))
 					return (1);
+					ft_cleanfigure(map, *figure);
 			}
 			//printf("x:%d, y:%d\n", x, y);
 			x++;
