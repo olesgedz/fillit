@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 10:37:09 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/14 15:44:33 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,16 +202,18 @@ int		ft_putfigure(t_map *map, t_etris *figure, t_point *p)
 	int k;
 	int count = 0;
 	j = 0;
+
+	ft_cleanfigure(map, figure);
 	while (j < 4)
 	{
 		k = 0;
 		while (k < 4)
 		{
-			 // ft_printmap(map->content);
-			 // 	ft_putchar('\n');
+			  // ft_printmap(map->content);
+			  // 	ft_putchar('\n');
 			if (figure->content[j][k] == '#')
 			{
-				if (j + p->y >= map->size  || k + p->x  >=  map->size)
+				if (j + p->y >= map->size || k + p->x  >= map->size)
 				{
 					ft_cleanfigure(map, figure);
 					return (0);
@@ -344,15 +346,31 @@ int		main(int argc, char **argv)
 	{
 		figures[number]->id = c++;
 		figures[number]->content = (char **)malloc(sizeof(char *) * 5);
-		while ((flag = get_next_line(fd, &line)) && i < 4)
+		while (i < 5)
 		{
-			figures[number]->content[i] = ft_strdup(line);
-			if (ft_strlen(figures[number]->content[i]) != 4)
+			flag = get_next_line(fd, &line);
+			if (*line == '\n')
+				printf("nice");
+			if (i < 4)
 			{
-				write(1, "error\n", 6);
-				exit(1);
+				figures[number]->content[i] = ft_strdup(line);
+				if (ft_strlen(figures[number]->content[i]) != 4)
+				{
+					write(1, "error\n", 6);
+					exit(1);
+				}
+				free(line);
+
 			}
-			free(line);
+			else
+			{
+				if (*line == '\n')
+				{
+					ft_putstr("ok");
+					exit(1);
+				}
+				// i++;
+			}
 			i++;
 		}
 		figures[number]->content[4] = NULL;
@@ -367,7 +385,7 @@ int		main(int argc, char **argv)
 	{
 		if (!ft_validate(figures[i]))
 		{
-			write(2, "error\n", 6);
+			write(1, "error\n", 6);
 			exit(1);
 		}
 		ft_getsizeY(figures[i]);
