@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 02:57:57 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/14 10:37:09 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ int		ft_solve(t_map *map, t_etris **figure)
 	//printf("%pHERE\n", (*figure)->content);
 	if ((*figure)->content == NULL)
 		return (1);
+	y = 0;
 	while (y < map->size)
 	{
 		x = 0;
@@ -346,6 +347,11 @@ int		main(int argc, char **argv)
 		while ((flag = get_next_line(fd, &line)) && i < 4)
 		{
 			figures[number]->content[i] = ft_strdup(line);
+			if (ft_strlen(figures[number]->content[i]) != 4)
+			{
+				write(1, "error\n", 6);
+				exit(1);
+			}
 			free(line);
 			i++;
 		}
@@ -360,7 +366,10 @@ int		main(int argc, char **argv)
 	while (i < number)
 	{
 		if (!ft_validate(figures[i]))
-			return (0);
+		{
+			write(2, "error\n", 6);
+			exit(1);
+		}
 		ft_getsizeY(figures[i]);
 		ft_getsizeX(figures[i]);
 
