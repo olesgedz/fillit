@@ -6,7 +6,7 @@
 /*   By: numberbl <numberbl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 18:10:33 by numberbl          #+#    #+#             */
-/*   Updated: 2019/01/14 15:44:33 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/14 15:53:44 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,8 +349,6 @@ int		main(int argc, char **argv)
 		while (i < 5)
 		{
 			flag = get_next_line(fd, &line);
-			if (*line == '\n')
-				printf("nice");
 			if (i < 4)
 			{
 				figures[number]->content[i] = ft_strdup(line);
@@ -360,13 +358,12 @@ int		main(int argc, char **argv)
 					exit(1);
 				}
 				free(line);
-
 			}
 			else
 			{
-				if (*line == '\n')
+				if (!(ft_strlen(line) == 0))
 				{
-					ft_putstr("ok");
+					ft_putstr("error\n");
 					exit(1);
 				}
 				// i++;
