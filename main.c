@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/14 16:30:46 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/14 21:12:09 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,10 +286,10 @@ int		ft_solve(t_map *map, t_etris **figure)
 	if ((*figure)->content == NULL)
 		return (1);
 	y = 0;
-	while (y < map->size)
+	while (y < map->size - (*figure)->height + 1)
 	{
 		x = 0;
-		while (x < map->size)
+		while (x < map->size - (*figure)->width + 2)
 		{
 			if (ft_putfigure(map, *figure, point_new(x, y)))
 			{
@@ -355,7 +355,7 @@ int		main(int argc, char **argv)
 				figures[number]->content[i] = ft_strdup(line);
 				if (ft_strlen(figures[number]->content[i]) != 4)
 				{
-					write(1, "error\n", 6);
+					ft_putstr("error\n");
 					exit(1);
 				}
 				free(line);
@@ -383,7 +383,7 @@ int		main(int argc, char **argv)
 	{
 		if (!ft_validate(figures[i]))
 		{
-			write(1, "error\n", 6);
+			ft_putstr("error\n");
 			exit(1);
 		}
 		ft_getsizeY(figures[i]);
@@ -397,13 +397,6 @@ int		main(int argc, char **argv)
 
 	t_map *map = malloc(sizeof(t_map));
 	map->size = 2;
-int l = 0;
-	//ft_test(map, figures);
-	// while (l < 16 && figures[l]->content != NULL)
-	// {
-	// 	printf("ALL:%p\n", figures++);
-	// 	l++;
-	// }
 	while (1)
 	{
 			map->content = ft_2darraynew(map->size, map->size, '.');
