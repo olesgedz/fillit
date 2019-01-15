@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/15 23:54:14 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/15 23:13:55 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,7 +352,7 @@ t_map 	*ft_map_init(int n)
 
 int		main(int argc, char **argv)
 {
-	t_etris **figures;
+	t_etris *figures;
 	uint64_t temp;
 	int nfigures;
 	t_map *map;
@@ -364,30 +364,29 @@ int		main(int argc, char **argv)
 		ft_putstr("No input file\n");
 		return (0);
 	}
-	figures = malloc(sizeof(t_etris *) * 26);
+	figures = malloc(sizeof(t_etris) * 26);
 	while (i < 26)
 	{
-		figures[i] = malloc(sizeof(t_etris));
-		figures[i]->content = NULL;
+		figures[i].content = NULL;
 		i++;
 	}
-	 nfigures = ft_readmap(figures, open(argv[1], O_RDONLY));
-	ft_file_valid(figures, nfigures);
-	map = ft_map_init(nfigures);
-	while (1)
-	{
-		map->content = ft_2darraynew(map->size, map->size, '.');
-		if (ft_solve(map, figures))
-			break ;
-		else
-		{
-			ft_free_map(map);
-			map->size++;
-		}
-	}
-	ft_printmap(map->content);
-	ft_free_map(map);
-	free(map);
+	figures = ft_readmap(figures, open(argv[1], O_RDONLY));
+	// ft_file_valid(figures, nfigures);
+	// map = ft_map_init(nfigures);
+	// while (1)
+	// {
+	// 	map->content = ft_2darraynew(map->size, map->size, '.');
+	// 	if (ft_solve(map, figures))
+	// 		break ;
+	// 	else
+	// 	{
+	// 		ft_free_map(map);
+	// 		map->size++;
+	// 	}
+	// }
+	// ft_printmap(map->content);
+	// ft_free_map(map);
+	// free(map);
 	i = 0;
 	while (i < 26)
 	{
