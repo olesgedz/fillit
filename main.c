@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/15 23:54:14 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/16 16:23:53 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,25 @@ t_map 	*ft_map_init(int n)
 	return(map);
 }
 
+
+void		ft_free_everything(t_map *map, t_etris **figures)
+{
+	int i;
+
+	ft_free_map(map);
+	free(map);
+	i = 0;
+	while (i < 26)
+	{
+		if (figures[i]->content != NULL)
+			ft_2darrayclean(&(figures[i]->content));
+		ft_memdel((void**)&figures[i]);
+		i++;
+	}
+		free(figures);
+		figures = NULL;
+}
+
 int		main(int argc, char **argv)
 {
 	t_etris **figures;
@@ -386,26 +405,6 @@ int		main(int argc, char **argv)
 		}
 	}
 	ft_printmap(map->content);
-	ft_free_map(map);
-	free(map);
-	i = 0;
-	while (i < 26)
-	{
-		if (figures[i]->content != NULL)
-			ft_2darrayclean(&(figures[i]->content));
-		figures[i] = NULL;
-		i++;
-	}
-	free(figures);
-	figures = NULL;
+	ft_free_everything(map, figures);
 	return (0);
 }
-
-// int main()
-// {
-// 	char **a;
-//
-// 	a = ft_2darraynew(5, 5, '.');
-// 	ft_2darrayclean(&a);
-// 	return(0);
-// }
