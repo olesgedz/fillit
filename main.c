@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/17 01:42:08 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 02:28:26 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,38 +269,51 @@ void		ft_error()
 	exit(1);
 }
 
+int		ft_readFigures(t_etris **figures,	int fd, int *number)
+{
+	int i;
+	int flag;
+	char *line;
+
+	line = "";
+	flag = 1;
+	i = 0;
+	while (i < 5)
+	{
+		flag = get_next_line(fd, &line);
+		if (i < 4)
+		{
+			figures[*number]->content[i] = ft_strdup(line);
+			if (ft_strlen(figures[*number]->content[i]) != 4)
+					ft_error();
+			free(line);
+		}
+		else
+		{
+			if (ft_strlen(line) != 0)
+				ft_error();
+		}
+		i++;
+	}
+	return(flag);
+}
+
 int		ft_readmap(t_etris **figures, int fd)
 {
-	int flag = 1;
-	unsigned char c = 'A';
-	int number = 0;
-	int i = 0;
-	char *line;
-	line = "";
+	int flag;
+	unsigned char c;
+	int number;
+
+	flag = 1;
+	c = 'A';
+	number = 0;
+
 	while (flag)
 	{
 		figures[number]->id = c++;
 		figures[number]->content = (char **)malloc(sizeof(char *) * 5);
-		while (i < 5)
-		{
-			flag = get_next_line(fd, &line);
-			//printf("f%d\n", flag);
-			if (i < 4)
-			{
-				figures[number]->content[i] = ft_strdup(line);
-				if (ft_strlen(figures[number]->content[i]) != 4)
-						ft_error();
-				free(line);
-			}
-			else
-			{
-				if (ft_strlen(line) != 0)
-					ft_error();
-			}
-			i++;
-		}
+		flag = ft_readFigures(figures, fd, &number);
 		figures[number]->content[4] = NULL;
-		i = 0;
 		number++;
 	 }
 	return (number);
