@@ -286,23 +286,27 @@ int		ft_readmap(t_etris **figures, int fd)
 			if (i < 4)
 			{
 				figures[number]->content[i] = ft_strdup(line);
-				ft_memdel((void **)&line);
 				if (ft_strlen(figures[number]->content[i]) != 4)
-					ft_error();
+				{
+					ft_putstr("error\n");
+					exit(1);
+				}
+				free(line);
 			}
 			else
 			{
-				if (line && !(ft_strlen(line) == 0))
+				if (!(ft_strlen(line) == 0))
 				{
-					ft_memdel((void **)&line);
-					ft_error();
+					ft_putstr("error\n");
+					exit(1);
 				}
+				// i++;
 			}
 			i++;
 		}
-		ft_memdel((void **)&line);
-		figures[number++]->content[4] = NULL;
+		figures[number]->content[4] = NULL;
 		i = 0;
+		number++;
 	}
 	return (number);
 }
@@ -352,7 +356,7 @@ t_map 	*ft_map_init(int n)
 
 int		main(int argc, char **argv)
 {
-	t_etris *figures;
+	t_etris **figures;
 	uint64_t temp;
 	int nfigures;
 	t_map *map;
@@ -364,29 +368,30 @@ int		main(int argc, char **argv)
 		ft_putstr("No input file\n");
 		return (0);
 	}
-	figures = malloc(sizeof(t_etris) * 26);
+	figures = malloc(sizeof(t_etris*) * 26);
 	while (i < 26)
 	{
-		figures[i].content = NULL;
+		figures[i] =  malloc(sizeof(t_etris));
+		figures[i]->content = NULL;
 		i++;
 	}
-	figures = ft_readmap(figures, open(argv[1], O_RDONLY));
-	// ft_file_valid(figures, nfigures);
-	// map = ft_map_init(nfigures);
-	// while (1)
-	// {
-	// 	map->content = ft_2darraynew(map->size, map->size, '.');
-	// 	if (ft_solve(map, figures))
-	// 		break ;
-	// 	else
-	// 	{
-	// 		ft_free_map(map);
-	// 		map->size++;
-	// 	}
-	// }
-	// ft_printmap(map->content);
-	// ft_free_map(map);
-	// free(map);
+	nfigures = ft_readmap(figures, open(argv[1], O_RDONLY));
+	ft_file_valid(figures, nfigures);
+	map = ft_map_init(nfigures);
+	while (1)
+	{
+		map->content = ft_2darraynew(map->size, map->size, '.');
+		if (ft_solve(map, figures))
+			break ;
+		else
+		{
+			ft_free_map(map);
+			map->size++;
+		}
+	}
+	ft_printmap(map->content);
+	ft_free_map(map);
+	free(map);
 	i = 0;
 	while (i < 26)
 	{
