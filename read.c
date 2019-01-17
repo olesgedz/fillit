@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:56:16 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:15:47 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:41:03 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	ft_free_map(t_map *map)
 	ft_memdel((void **)&(map->content));
 }
 
-
+/*
+* Moves figure to (0,0) point
+*/
 char		**ft_normfigure(char **dst, t_etris *figure)
 {
 	int j;

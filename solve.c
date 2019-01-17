@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 04:07:12 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:25:41 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:40:17 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 
 
-void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
+static void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 {
 	int i;
 	int j;
@@ -36,9 +36,10 @@ void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 }
 
 /*
-* 	Looks if that figure can fit at that point
+*	Looks if that figure can fit at that point
+*		and uses ft_putfigure to write it down in map;
 */
-int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
+static int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 {
 	int i;
 	int j;
@@ -60,7 +61,11 @@ int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 	return (1);
 }
 
-int		ft_solve(t_map *map, t_etris **figure)
+/*
+* Just recursion moving by (x,y) and tring to fit
+*/
+
+static int		ft_solve(t_map *map, t_etris **figure)
 {
 	int x;
 	int y;

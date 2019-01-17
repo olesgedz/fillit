@@ -6,13 +6,16 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:35:56 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 03:51:43 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:42:09 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft.h"
 
+/*
+* get (0,0) start of figure
+*/
 int		ft_getsizeY(t_etris *figure)
 {
 	int j;
