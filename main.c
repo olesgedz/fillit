@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/17 03:00:04 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 03:10:58 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,32 +199,6 @@ int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 	}
 	ft_putfigure(tetri, map, ft_point_new(x, y), tetri->id);
 	return (1);
-}
-
-char		**ft_2darraynew(size_t y, size_t x, char c)
-{
-	char			**new;
-	size_t				j;
-	size_t				k;
-
-	if (!(new = (char **)(malloc(sizeof(char *) * (y + 1)))))
-		return (NULL);
-	new[y] = NULL;
-	j = 0;
-	while (j < y)
-	{
-		if (!(new[j] = (char *)(malloc(sizeof(char ) * x + 1))))
-			return (NULL);
-		new[j][x] = '\0';
-		k = 0;
-		while (k < x)
-		{
-			new[j][k] = c;
-			k++;
-		}
-		j++;
-	}
-	return (new);
 }
 
 int		ft_solve(t_map *map, t_etris **figure)

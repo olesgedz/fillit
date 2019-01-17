@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 16:54:51 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/15 16:54:51 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/01/17 03:15:59 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,5 @@ typedef struct s_map
 	int size;
 	int nfigures;
 } t_map;
-
-typedef struct	s_point
-{
-	int			x;
-	int			y;
-}				t_point;
-
-
 
 #endif
