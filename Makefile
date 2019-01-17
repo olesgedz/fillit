@@ -6,14 +6,14 @@
 #    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
-#    Updated: 2019/01/06 02:08:57 by olesgedz         ###   ########.fr        #
+#    Updated: 2019/01/17 04:14:08 by olesgedz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = fillit
 
-SRC = main.c
+SRC = main.c validation.c read.c solve.c init.c
 OBJ = $(SRC:.c=.o)
 
 CC = clang
@@ -24,14 +24,14 @@ LIBFT= ./libft/libft.a
 LIBINC= -I ./libft/includes/
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) -g $(LIBFT) $(SRC) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
+	$(CC) -g $(LIBFT) $(OBJ) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
 
 all: $(NAME)
 
 
 
 $(OBJ): $(SRC)
-	clang -c $(SRC) -o $(OBJ) $(LIBINC)
+	clang -c $(SRC) $(LIBINC)
 
 libft: $(LIBFT)
 
