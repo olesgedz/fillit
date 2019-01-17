@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 04:11:27 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 04:18:40 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:10:36 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_map 	*ft_map_init(int n)
 {
 	t_map *map;
 
+	if (n > 26)
+		ft_error();
 	map = (t_map *)malloc(sizeof(t_map));
 	map->size = ft_minmap(n * 4);
 	return(map);
