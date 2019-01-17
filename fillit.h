@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 16:54:51 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/17 04:17:47 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 04:18:53 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_map
 {
 	char **content;
 	int size;
-	int nfigures;
 } t_map;
 
 
