@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 16:13:00 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/17 02:28:26 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 03:00:04 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,30 +362,39 @@ t_map 	*ft_map_init(int n)
 	return(map);
 }
 
-int		main(int argc, char **argv)
+void		ft_free_everything(t_map *map, t_etris **figures)
 {
-	t_etris **figures;
-	uint64_t temp;
-	int nfigures;
-	t_map *map;
+	int i;
+
+	ft_free_map(map);
+	free(map);
+	i = 0;
+	while (i < 26)
+	{
+		if (figures[i]->content != NULL)
+			ft_2darrayclean(&(figures[i]->content));
+		ft_memdel((void**)&figures[i]);
+		i++;
+	}
+		free(figures);
+		figures = NULL;
+}
+
+void		ft_figures_init(t_etris ***figures)
+{
 	int i;
 
 	i = 0;
-	if (argc < 2)
-	{
-		ft_putstr("No input file\n");
-		return (0);
-	}
-	figures = malloc(sizeof(t_etris*) * 26);
+	*figures = malloc(sizeof(t_etris*) * 26);
 	while (i < 26)
 	{
-		figures[i] =  malloc(sizeof(t_etris));
-		figures[i]->content = NULL;
+		(*figures)[i] =  malloc(sizeof(t_etris));
+		((*figures)[i])->content = NULL;
 		i++;
 	}
-	nfigures = ft_readmap(figures, open(argv[1], O_RDONLY));
-	ft_file_valid(figures, nfigures);
-	map = ft_map_init(nfigures);
+}
+void		ft_mainloop(t_etris **figures, t_map *map)
+{
 	while (1)
 	{
 		map->content = ft_2darraynew(map->size, map->size, '.');
@@ -397,27 +406,25 @@ int		main(int argc, char **argv)
 			map->size++;
 		}
 	}
-	ft_printmap(map->content);
-	ft_free_map(map);
-	free(map);
-	i = 0;
-	while (i < 26)
-	{
-		if (figures[i]->content != NULL)
-			ft_2darrayclean(&(figures[i]->content));
-		figures[i] = NULL;
-		i++;
-	}
-	free(figures);
-	figures = NULL;
-	return (0);
 }
 
-// int main()
-// {
-// 	char **a;
-//
-// 	a = ft_2darraynew(5, 5, '.');
-// 	ft_2darrayclean(&a);
-// 	return(0);
-// }
+int		main(int argc, char **argv)
+{
+	t_etris **figures;
+	int nfigures;
+	t_map *map;
+
+	if (argc < 2)
+	{
+		ft_putstr("No input file\n");
+		return (0);
+	}
+	ft_figures_init(&figures);
+	nfigures = ft_readmap(figures, open(argv[1], O_RDONLY));
+	ft_file_valid(figures, nfigures);
+	map = ft_map_init(nfigures);
+	ft_mainloop(figures, map);
+	ft_printmap(map->content);
+	ft_free_everything(map, figures);
+	return (0);
+}
