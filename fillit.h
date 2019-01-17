@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 16:54:51 by jblack-b          #+#    #+#             */
-/*   Updated: 2019/01/17 04:13:38 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 04:17:47 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,20 @@ typedef struct s_map
 	int nfigures;
 } t_map;
 
-int		ft_checkwidth(char **figure, int j, int *map);
-void		ft_error();
+
+
 void		ft_figures_init(t_etris ***figures);
 t_map 	*ft_map_init(int n);
-char		**ft_normfigure(char **dst, t_etris *figure);
-int		ft_checkwidth(char **figure, int j, int *map);
 
+char		**ft_normfigure(char **dst, t_etris *figure);
 int		ft_file_valid(t_etris **figures, int number);
 int		ft_readmap(t_etris **figures, int fd);
 
 void		ft_mainloop(t_etris **figures, t_map *map);
 void	ft_free_map(t_map *map);
 void		ft_free_everything(t_map *map, t_etris **figures);
+
+int		ft_checkwidth(char **figure, int j, int *map);
+void		ft_error();
+int		ft_checkwidth(char **figure, int j, int *map);
 #endif
