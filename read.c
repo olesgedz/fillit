@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:56:16 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 04:06:19 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 04:27:20 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "get_next_line.h"
 #include "fillit.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	ft_free_map(t_map *map)
 {
@@ -119,6 +120,7 @@ int		ft_readmap(t_etris **figures, int fd)
 		flag = ft_readFigures(figures, fd, &number);
 		figures[number]->content[4] = NULL;
 		number++;
-	 }
+	}
+	close(fd);
 	return (number);
 }
