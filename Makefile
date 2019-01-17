@@ -6,7 +6,7 @@
 #    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
-#    Updated: 2019/01/17 04:14:08 by olesgedz         ###   ########.fr        #
+#    Updated: 2019/01/17 06:01:35 by olesgedz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ LIBFT= ./libft/libft.a
 LIBINC= -I ./libft/includes/
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) -g $(LIBFT) $(OBJ) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
+	$(CC)  $(LIBFT) $(OBJ) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
 
 all: $(NAME)
 
