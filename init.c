@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 04:11:27 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:13:20 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:23:39 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int		ft_checkwidth(char **figure, int j, int *map)
 	return (*map);
 }
 
+/*
+* Calculate minimal map size
+*/
 static int		ft_minmap(int n)
 {
 	int size;

@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 04:07:12 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 04:09:22 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:25:41 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 	ft_memdel((void **)&point);
 }
 
+/*
+* 	Looks if that figure can fit at that point
+*/
 int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 {
 	int i;
