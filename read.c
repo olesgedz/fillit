@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:56:16 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 04:27:20 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 05:13:16 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ int		ft_readmap(t_etris **figures, int fd)
 		figures[number]->content = (char **)malloc(sizeof(char *) * 5);
 		flag = ft_readFigures(figures, fd, &number);
 		figures[number]->content[4] = NULL;
+		if (number > 26)
+			ft_error();
 		number++;
 	}
 	close(fd);
