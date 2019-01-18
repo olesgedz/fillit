@@ -6,14 +6,14 @@
 #    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/29 18:10:26 by jblack-b          #+#    #+#              #
-#    Updated: 2019/01/17 06:01:35 by olesgedz         ###   ########.fr        #
+#    Updated: 2019/01/19 02:08:23 by olesgedz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = fillit
 
-SRC = main.c validation.c read.c solve.c init.c
+SRC = main.c validation.c read.c solve.c init.c helper.c
 OBJ = $(SRC:.c=.o)
 
 CC = clang
@@ -24,21 +24,21 @@ LIBFT= ./libft/libft.a
 LIBINC= -I ./libft/includes/
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC)  $(LIBFT) $(OBJ) $(LIBINC) -o $(NAME) 	&& make clean -C ./libft
+	@$(CC) $(LIBFT) $(OBJ) $(LIBINC) -o $(NAME)
+	@echo "compilation is finished"
 
 all: $(NAME)
 
-
-
 $(OBJ): $(SRC)
-	clang -c $(SRC) $(LIBINC)
+	@clang -c $(SRC) $(LIBINC)
 
 libft: $(LIBFT)
 
 $(LIBFT):
-	make -C ./libft
+	@make -C ./libft
+
 coffee:
-	echo "hello"
+	@echo "hello"
 
 debug: libft $(OBJ)
 	@$(CC) $(LIBLINK) -g $(SRC)

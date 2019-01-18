@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:56:16 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:41:03 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/17 15:32:11 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	ft_free_map(t_map *map)
+void			ft_free_map(t_map *map)
 {
 	int i;
 
@@ -30,9 +30,10 @@ void	ft_free_map(t_map *map)
 }
 
 /*
-* Moves figure to (0,0) point
+**Moves figure to (0,0) point
 */
-char		**ft_normfigure(char **dst, t_etris *figure)
+
+char			**ft_normfigure(char **dst, t_etris *figure)
 {
 	int j;
 	int k;
@@ -57,7 +58,7 @@ char		**ft_normfigure(char **dst, t_etris *figure)
 	return (dst);
 }
 
-void		ft_free_everything(t_map *map, t_etris **figures)
+void			ft_free_everything(t_map *map, t_etris **figures)
 {
 	int i;
 
@@ -71,57 +72,55 @@ void		ft_free_everything(t_map *map, t_etris **figures)
 		ft_memdel((void**)&figures[i]);
 		i++;
 	}
-		free(figures);
-		figures = NULL;
+	free(figures);
+	figures = NULL;
 }
 
-static int		ft_readFigures(t_etris **figures,	int fd, int *number)
+int				ft_readfigures(t_etris **figures, int fd, int *number)
 {
-	int i;
-	int flag;
-	char *line;
+	int			i;
+	int			flag;
+	char		*line;
+	char		*end;
 
+	end = NULL;
 	line = "";
 	flag = 1;
 	i = 0;
 	while (i < 5)
 	{
-		flag = get_next_line(fd, &line);
 		if (i < 4)
 		{
+			flag = get_next_line(fd, &line);
 			figures[*number]->content[i] = ft_strdup(line);
 			if (ft_strlen(figures[*number]->content[i]) != 4)
-					ft_error();
+				ft_error();
 			free(line);
 		}
 		else
-		{
-			if (ft_strlen(line) != 0)
-				ft_error();
-		}
+			ft_check_end(&flag, end, fd);
 		i++;
 	}
-	return(flag);
+	return (flag);
 }
 
-
-int		ft_readmap(t_etris **figures, int fd)
+int				ft_readmap(t_etris **figures, int fd)
 {
-	int flag;
-	unsigned char c;
-	int number;
+	int				flag;
+	unsigned char	c;
+	int				number;
 
 	flag = 1;
 	c = 'A';
 	number = 0;
-
 	while (flag)
 	{
 		if (number >= 26)
 			ft_error();
 		figures[number]->id = c++;
-		figures[number]->content = (char **)malloc(sizeof(char *) * 5);
-		flag = ft_readFigures(figures, fd, &number);
+		if (!(figures[number]->content = (char **)malloc(sizeof(char *) * 5)))
+			ft_error();
+		flag = ft_readfigures(figures, fd, &number);
 		figures[number]->content[4] = NULL;
 		number++;
 	}

@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 03:35:56 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:42:09 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/19 02:31:44 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "libft.h"
 
 /*
-* get (0,0) start of figure
+**get (0,0) start of figure
 */
-int		ft_getsizeY(t_etris *figure)
+
+int		ft_getsize_y(t_etris *figure)
 {
 	int j;
 	int start;
@@ -40,7 +41,7 @@ int		ft_getsizeY(t_etris *figure)
 	return (end - start + 1);
 }
 
-int		ft_getsizeX(t_etris *figure)
+int		ft_getsize_x(t_etris *figure)
 {
 	int j;
 	int k;
@@ -49,8 +50,8 @@ int		ft_getsizeX(t_etris *figure)
 
 	end = -1;
 	start = 5;
-	j = 0;
-	while (j < 4)
+	j = -1;
+	while (++j < 4)
 	{
 		k = 0;
 		while (k < 4)
@@ -64,22 +65,16 @@ int		ft_getsizeX(t_etris *figure)
 			}
 			k++;
 		}
-		j++;
 	}
 	figure->x = start;
 	return (figure->width = end - start + 1);
 }
 
-void		ft_count_nieghbors(int j, int k, int *count, char **temp)
+void	ft_count_nieghbors(int j, int k, int *count, char **temp)
 {
 	if (temp[j][k] == '#')
 	{
-		*count += 1;
-		if (k - 1 >= 0 && temp[j][k - 1] == '#')
-			*count += 1;
 		if (k + 1 <= 3 && temp[j][k + 1] == '#')
-			*count += 1;
-		if (j - 1 >= 0 && temp[j - 1][k] == '#')
 			*count += 1;
 		if (j + 1 <= 3 && temp[j + 1][k] == '#')
 			*count += 1;
@@ -108,7 +103,7 @@ int		ft_validate(t_etris *figure)
 			ft_count_nieghbors(j, k++, &count, figure->content);
 		}
 	}
-	if ((count == 10 || count == 12) && map == 1)
+	if ((count == 3 || count == 4) && map == 1)
 		figure->valid = 1;
 	else
 		figure->valid = 0;
@@ -124,8 +119,9 @@ int		ft_file_valid(t_etris **figures, int number)
 	{
 		if (!ft_validate(figures[i]))
 			ft_error();
-		ft_getsizeY(figures[i]);
-		ft_getsizeX(figures[i]);
+		ft_countsharps(figures[i]);
+		ft_getsize_y(figures[i]);
+		ft_getsize_x(figures[i]);
 		ft_normfigure(figures[i]->content, figures[i]);
 		i++;
 	}

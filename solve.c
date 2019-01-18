@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 04:07:12 by olesgedz          #+#    #+#             */
-/*   Updated: 2019/01/17 05:40:17 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/01/19 02:11:05 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include <stdlib.h>
 #include "libft.h"
 
-
-static void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
+static void		ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 {
 	int i;
 	int j;
@@ -36,9 +35,10 @@ static void	ft_putfigure(t_etris *tetri, t_map *map, t_point *point, char c)
 }
 
 /*
-*	Looks if that figure can fit at that point
-*		and uses ft_putfigure to write it down in map;
+**Looks if that figure can fit at that point
+**and uses ft_putfigure to write it down in map;
 */
+
 static int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 {
 	int i;
@@ -62,7 +62,7 @@ static int		ft_checkplace(t_etris *tetri, t_map *map, int x, int y)
 }
 
 /*
-* Just recursion moving by (x,y) and tring to fit
+**Just recursion moving by (x,y) and tring to fit
 */
 
 static int		ft_solve(t_map *map, t_etris **figure)
@@ -76,7 +76,7 @@ static int		ft_solve(t_map *map, t_etris **figure)
 	while (y < map->size - (*figure)->height + 1)
 	{
 		x = 0;
-		while (x < map->size - (*figure)->width + 2)
+		while (x < map->size - (*figure)->width + 1)
 		{
 			if (ft_checkplace(*figure, map, x, y))
 			{
@@ -91,7 +91,7 @@ static int		ft_solve(t_map *map, t_etris **figure)
 	return (0);
 }
 
-void		ft_mainloop(t_etris **figures, t_map *map)
+void			ft_mainloop(t_etris **figures, t_map *map)
 {
 	while (1)
 	{
